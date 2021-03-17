@@ -3,8 +3,7 @@ import React, {useState} from 'react'
 function Header({addItem}){
 
     const [stateInp,setStateInp] = useState('')
-
-
+    const [counterForID,setcounterForID ] = useState(0)  
 return(
     <div className="require">
         <input type="text" 
@@ -13,15 +12,17 @@ return(
         onChange={event=>setStateInp(event.target.value)}
         value = {stateInp}
         onKeyDown = {event=>{
-            if(event.key == 'Enter'){
-                addItem({title:stateInp,checked:false})
+            if(event.key === 'Enter'){
+                addItem({id:counterForID, title:stateInp,checked:false, visibility: true})
+                setcounterForID(counterForID+1)
                 setStateInp('') 
             }
         }}
         >
         </input>
         <div className="add" onClick={()=>{
-                addItem({title:stateInp,checked:false})
+                addItem({id:counterForID, title:stateInp,checked:false, visibility: true})
+                setcounterForID(counterForID+1)
                 setStateInp('')  
         }}>
             <img src="./add.png" alt="#"/>

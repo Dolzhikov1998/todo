@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import Header from './components/Header'
-import SearchBar from './components/SearchBar'
 import Item from './components/Item'
 import Filters from './components/Filters'
 
@@ -8,26 +7,35 @@ import Filters from './components/Filters'
 function App() {
 
 const [todos, setTodos] = useState([])
+const [todosForFilter, setTodosForFilter] = useState([])
+
 
 function addNewItem(newItem){
   const newTodo= [...todos, newItem]
   setTodos(newTodo)
 }
 
-function deleteItemComponent(indexDeleteItem){
+function deleteItemComponent( idDeleteItem){
   setTodos(
-    todos.filter((_, index)=>index != indexDeleteItem)
+    todos.filter(item => item.id !== idDeleteItem)
   )
+  console.log(todos)
 }
 
 function filterReadyTodos(){
+
+  // setTodos(
+  //   todos.filter(item =>{
+  //     (item.checked === true) && (item.visibility = false)
+  //   })
+  // )
   console.log(todos)
-  const result = todos.filter((item,index)=>item.checked ===true)
+  console.log(todosForFilter)
  }
 
 function filterDontReadyTodos(){
   console.log(todos)
-    todos.filter((item,index)=>item.checked ===false)
+    todos.filter( item => item.checked === false)
 }
 
 function filterRenderAllTodos(){
@@ -39,10 +47,13 @@ function filterRenderAllTodos(){
   )
 }
 
-function changeCheckedTodosItem(indexItem,stateCheckItem){
+function changeCheckedTodosItem(idItem){
   setTodos(
-    todos.filter((item,index)=>{
-      (index == indexItem) &&(item.checked = !stateCheckItem)
+    todos.filter(item => {
+      if(item.id === idItem){
+        item.checked = !item.checked
+      }
+      // (item.id === idItem) &&(item.checked = !item.checked)
       return item
     })
   )
@@ -51,11 +62,10 @@ function changeCheckedTodosItem(indexItem,stateCheckItem){
     
       <div className="container">
         <Header addItem = {addNewItem}/>
-        <SearchBar/>
         <Filters filterDoneTodos = {filterReadyTodos} filterFalseTodos = {filterDontReadyTodos} filterAllTodos= {filterRenderAllTodos}/>
         <form className='content'>
           {
-            todos.map((todo, index)=>(<Item todo = {todo} index = {index} deleteItem={deleteItemComponent} changeCheckedTodos={changeCheckedTodosItem}/>))
+            todos.map(todo=>(<Item key = {todo.id} todo = {todo}  deleteItem={deleteItemComponent} changeCheckedTodos={changeCheckedTodosItem}/>))
           }
         </form>
         

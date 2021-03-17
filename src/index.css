@@ -213,3 +213,6 @@ code {
 .done{
   background-color: rgb(155, 245, 155);
 }
+.hide{
+  display: block;
+}
