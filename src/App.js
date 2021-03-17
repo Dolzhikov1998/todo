@@ -5,9 +5,9 @@ import Filters from './components/Filters'
 
 
 function App() {
-
 const [todos, setTodos] = useState([])
-const [todosForFilter, setTodosForFilter] = useState([])
+// const [todosForFilter, setTodosForFilter] = useState([])
+const [btnFilters,setBtnFilters] = useState('all')
 
 
 function addNewItem(newItem){
@@ -23,28 +23,15 @@ function deleteItemComponent( idDeleteItem){
 }
 
 function filterReadyTodos(){
-
-  // setTodos(
-  //   todos.filter(item =>{
-  //     (item.checked === true) && (item.visibility = false)
-  //   })
-  // )
-  console.log(todos)
-  console.log(todosForFilter)
+  setBtnFilters('done')
  }
 
 function filterDontReadyTodos(){
-  console.log(todos)
-    todos.filter( item => item.checked === false)
+  setBtnFilters('undone')
 }
 
 function filterRenderAllTodos(){
-  console.log(todos)
-  setTodos(
-    todos.filter(item=>{
-      return item.checked || true
-    })
-  )
+  setBtnFilters('all')
 }
 
 function changeCheckedTodosItem(idItem){
@@ -53,11 +40,44 @@ function changeCheckedTodosItem(idItem){
       if(item.id === idItem){
         item.checked = !item.checked
       }
-      // (item.id === idItem) &&(item.checked = !item.checked)
       return item
     })
   )
 }
+
+function render(){
+  if(btnFilters === 'all'){
+    return todos.map(todo=>(<Item key = {todo.id} 
+                                  todo = {todo}  
+                                  deleteItem={deleteItemComponent} 
+                                  changeCheckedTodos={changeCheckedTodosItem}/>))
+  } 
+  else if (btnFilters === 'done'){
+
+    // return <p>done</p>
+    
+    return todos.map(todo=>{
+      if(todo.checked === true){
+        {console.log("kkk")}
+        (<Item key = {todo.id} 
+              todo = {todo}  
+              deleteItem={deleteItemComponent} 
+              changeCheckedTodos={changeCheckedTodosItem}/>)
+      }
+    })
+  } else if (btnFilters === 'undone'){
+
+     return <p>undone</p>
+
+    // return todos.filter(item => item.checked === false).map(todo=>{
+    //     (<Item key = {todo.id} 
+    //       todo = {todo}  
+    //       deleteItem={deleteItemComponent} 
+    //       changeCheckedTodos={changeCheckedTodosItem}/>)
+    // })
+  }
+}
+
   return (
     
       <div className="container">
@@ -65,7 +85,8 @@ function changeCheckedTodosItem(idItem){
         <Filters filterDoneTodos = {filterReadyTodos} filterFalseTodos = {filterDontReadyTodos} filterAllTodos= {filterRenderAllTodos}/>
         <form className='content'>
           {
-            todos.map(todo=>(<Item key = {todo.id} todo = {todo}  deleteItem={deleteItemComponent} changeCheckedTodos={changeCheckedTodosItem}/>))
+            render()
+            // todos.map(todo=>(<Item key = {todo.id} todo = {todo}  deleteItem={deleteItemComponent} changeCheckedTodos={changeCheckedTodosItem}/>))
           }
         </form>
         

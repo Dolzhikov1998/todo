@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 function Item({todo, deleteItem, changeCheckedTodos}){
-    console.log(todo)
+
     const [stateCheck, setStateCheck]= useState(todo.checked)
     const classes = ['elemetns-content']
     const [dateCreateTodo] = useState(new Date().toLocaleString())
