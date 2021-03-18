@@ -2,13 +2,15 @@ import React from 'react'
 
 
 
-function Filters({filterDoneTodos, filterFalseTodos, filterAllTodos}){
+function Filters({filters}){
     return(
         <div className="containerForFiltersBtn">
-            <button className="btnFilterExpendTodo" onClick={()=>filterDoneTodos()}>Done</button>
-            <button className="btnFilterNotExpendTodo" onClick={()=>filterFalseTodos()}>Undone</button>
-            <button className="btnFilterAllTodo" onClick={()=>filterAllTodos()}>All</button>
-        </div>
+            <div>
+                <button className = "btnFilterExpendTodo" onClick = {() => filters('done')}>Done</button>
+                <button className = "btnFilterNotExpendTodo" onClick = {() => filters('undone')}>Undone</button>
+                <button className = "btnFilterAllTodo" onClick = {() => filters('all')}>All</button>
+            </div>
+        </div>  
     )
 }
 
