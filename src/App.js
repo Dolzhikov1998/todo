@@ -2,11 +2,14 @@ import React, {useState} from 'react'
 import Header from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
+import MyPaginations from './components/Paginations'
 
 
 function App() {
 const [todos, setTodos] = useState([])
 const [statusTodo, setStatusTodo] = useState('all')
+const [stateDate, setStateDate] = useState(false)
+const [statePag, setStatePag] = useState(1)
 
 
 function addNewItem(newItem){
@@ -17,13 +20,24 @@ function deleteItem(idDeleteItem){
   setTodos(
     todos.filter(item => item.id !== idDeleteItem)
   )
-  console.log(todos)
 }
 
 function filters(statusItem){
   setStatusTodo(
     statusItem
   )
+}
+
+function filtersForDate(valueDate){
+  setStateDate(valueDate)
+}
+
+function changeTitle(value, id){
+  todos.map(item => {
+    if(item.id === id){
+      item.title = value
+    }
+  })
 }
 
 function changeCheckedTodosItem(idItem){
@@ -40,17 +54,32 @@ function changeCheckedTodosItem(idItem){
   )
 }
 
+function handlerPagin (valuePagination){
+  setStatePag(valuePagination)
+}
+
   return (
     
       <div className = "container">
         <Header addItem = {addNewItem}/>
-        <Filters filters = {filters}/>
+        <Filters 
+         filters = {filters} 
+         filtersForDate={filtersForDate}/>
         <form className = 'content'>
           {
-            <ListTodos todos = {todos} deleteItem = {deleteItem} changeCheckedTodosItem = {changeCheckedTodosItem} statusTodos = {statusTodo}/>
+            <ListTodos 
+             todos = {todos} 
+             deleteItem = {deleteItem} 
+             changeCheckedTodosItem = {changeCheckedTodosItem} 
+             statusTodos = {statusTodo} 
+             stateDate = {stateDate}
+             changeTitle = {changeTitle}
+             statePag = {statePag}/>
           }
         </form>
-        
+        <MyPaginations 
+        todos = {todos}
+        handlerPagin = {handlerPagin}/>
       </div>
   );
 }

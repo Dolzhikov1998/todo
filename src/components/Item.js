@@ -1,17 +1,21 @@
 import React, {useState} from 'react'
+import TextField from '@material-ui/core/TextField'
+import Box from '@material-ui/core/Box'
+
 
 function Item(props){
-    const {todo, 
-        deleteItem, 
-        changeCheckedTodos} = props
+    const { todo, 
+            deleteItem, 
+            changeCheckedTodos,
+            changeTitle} = props
 
-    const [stateCheck, setStateCheck]= useState(todo.checked)
+    const [stateCheck, setStateCheck] = useState(todo.checked)
+    const [stateTitle, setStateTitle] = useState(todo.title)
+
     const classes = ['elemetns-content']
-    const [dateCreateTodo] = useState(new Date().toLocaleString())
 
     if(stateCheck){
         classes.push('done')
-        // console.log(classes)
     }  
 
     return(
@@ -23,15 +27,20 @@ function Item(props){
                 onChange = {() => {
                     changeCheckedTodos(todo.id)
                     setStateCheck(!stateCheck)
-                    // console.log(todo)
-                    // console.log(!stateCheck)
-                }}
-                />
+                }}/>
             </div>
             <div className = { classes.join(' ') }>
-                <div>
-                    <p className = "text_cont"><strong>{todo.title}</strong>&#160;&#160;<small>{dateCreateTodo}</small></p>
+                <div className="a">
+                    &#160;&#160;&#160;
+                    <TextField value = {stateTitle}
+                                onChange = {event =>{
+                                    setStateTitle(event.target.value)
+                                    changeTitle(stateTitle, todo.id)}}>
+                    </TextField>&#160;&#160;&#160;
+                    <Box>{todo.date}</Box>
                 </div>
+            
+                            {/* <p  className = "text_cont">{todo.title}&#160;&#160;&#160;<small>{todo.date}</small></p> */}
                 <div className = "delete" onClick={ () => {deleteItem(todo.id)}}>&times;</div>
             </div>
         </div>

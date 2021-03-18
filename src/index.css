@@ -181,9 +181,10 @@ code {
 
 .containerForFiltersBtn{
   display: flex;
-  width: 300px;
+  width: 500px;
   justify-content: space-between;
   margin: 10px 0;
+  align-items: center;
 }
 .btnFilterExpendTodo{
   height: 30px;
@@ -215,4 +216,27 @@ code {
 }
 .hide{
   display: block;
+}
+
+.arrowContainer{
+  display: inline-flex;
+  width: 180px;
+  height: 40px;
+  align-items: center;
+}
+
+.a{
+display: flex;
+align-items: center;
+}
+
+.inpForTitle{
+  display: flex;
+  border: none;
+  height: 30px;
+  background-color: rgb(236, 229, 229)
+}
+.ListTodos{
+  display: flex;
+  flex-direction: column;
 }

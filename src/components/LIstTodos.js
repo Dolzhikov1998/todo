@@ -4,37 +4,62 @@ import Item from './Item'
 
 function ListTodos(props){
     const {
+        stateDate,
         statusTodos, 
         todos, 
         deleteItem, 
-        changeCheckedTodosItem 
+        changeCheckedTodosItem,
+        changeTitle,
+        statePag
     } = props
+        console.log(statePag)
+    const sortDateUp = (a, b) => {
+        if(a.date < b.date) return 1
+        else if(a.date > b.date) return -1
+        else if(a.date === b.date) return 0
+    }
+    const sortDateDown = (a, b) => {
+        if(a.date > b.date) return 1
+        else if(a.date < b.date) return -1
+        else if(a.date === b.date) return 0
+    }
 
-
+    const filterTodoForDate = () =>{
+        console.log(stateDate)
+        if(stateDate === true)
+            return todos.sort(stateDate ? sortDateUp : sortDateDown)
+        else
+            return todos
+    }
+    
     const filters = () =>{
         if(statusTodos !== 'all')
         {
-            return todos.map(todo => {
+            return filterTodoForDate().map(todo => {
                       if(todo.status === statusTodos){
                         return (<Item 
                         key = {todo.id} 
                         todo = {todo}  
                         deleteItem = {deleteItem} 
+                        changeTitle = {changeTitle}  
                         changeCheckedTodos = {changeCheckedTodosItem}/>)
                       }
                     })
         }
-
-        return todos.map( todo => (<Item 
+        {
+            return filterTodoForDate().map( todo => (<Item 
                 key = {todo.id} 
                 todo = {todo}  
-                deleteItem = {deleteItem} 
+                deleteItem = {deleteItem}
+                changeTitle = {changeTitle}   
                 changeCheckedTodos = {changeCheckedTodosItem}
             />))
+        }
+       
     }
 
     return(
-        <div>
+        <div className = "ListTodos">
             {filters()}
         </div>
     )
