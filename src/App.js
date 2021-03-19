@@ -9,7 +9,7 @@ function App() {
 const [todos, setTodos] = useState([])
 const [statusTodo, setStatusTodo] = useState('all')
 const [stateDate, setStateDate] = useState(false)
-const [statePag, setStatePag] = useState(1)
+const [statePag, setStatePag] = useState(0)
 
 
 function addNewItem(newItem){
@@ -54,8 +54,11 @@ function changeCheckedTodosItem(idItem){
   )
 }
 
-function handlerPagin (valuePagination){
-  setStatePag(valuePagination)
+const handlerPagin = (e, statePag) => {
+  if(statePag === 1)
+    setStatePag(0)
+  else
+    setStatePag(statePag - 1)
 }
 
   return (
@@ -64,7 +67,7 @@ function handlerPagin (valuePagination){
         <Header addItem = {addNewItem}/>
         <Filters 
          filters = {filters} 
-         filtersForDate={filtersForDate}/>
+         filtersForDate = {filtersForDate}/>
         <form className = 'content'>
           {
             <ListTodos 

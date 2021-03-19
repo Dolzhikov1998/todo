@@ -2,6 +2,7 @@ import React from 'react'
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import Button from '@material-ui/core/Button';
 
 
 
@@ -11,17 +12,24 @@ function Filters(props){
     return(
         <div className="containerForFiltersBtn">
             <div>
-                <button className = "btnFilterExpendTodo" onClick = {() => filters('done')}>Done</button>
-                <button className = "btnFilterNotExpendTodo" onClick = {() => filters('undone')}>Undone</button>
-                <button className = "btnFilterAllTodo" onClick = {() => filters('all')}>All</button>
+            <Button variant = "outlined" color = "primary" onClick = {() => filters('done')}>
+                Done
+            </Button>
+            <Button variant = "outlined" color = "secondary" onClick = {() => filters('undone')}>
+                Undone
+            </Button>
+            <Button variant = "outlined" color = "default" onClick = {() => filters('all')}>
+                All
+            </Button>
             </div>
+
             <span className="arrowContainer">
-            <p>Sort by date:</p>&#160;&#160;
-                <IconButton aria-label="delete"  size="small">
-                    <ArrowDownwardIcon fontSize="inherit" onClick={() => filtersForDate(false)}/>
+                <p>Sort by date:</p>&#160;&#160;
+                <IconButton aria-label = "delete"  size="small" onClick = {() => filtersForDate(false)}>
+                    <ArrowDownwardIcon fontSize = "inherit" />
                 </IconButton>
-                <IconButton aria-label="delete"  size="small">
-                    <ArrowUpwardIcon fontSize="inherit" onClick={() => filtersForDate(true)}/>
+                <IconButton aria-label = "delete"  size="small" onClick = {() => filtersForDate(true)}>
+                    <ArrowUpwardIcon fontSize = "inherit" />
                 </IconButton>
             </span>    
         </div>  

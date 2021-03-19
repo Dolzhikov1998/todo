@@ -14,13 +14,13 @@ code {
 
 .container{
   width: 1200px;
-    background-color: rgb(236, 229, 229);
+    /* background-color: rgb(236, 229, 229); */
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid rgb(54, 54, 53);
+    /* border: 2px solid rgb(54, 54, 53); */
 }
 
 .require {
@@ -28,7 +28,7 @@ code {
   justify-content: center;
   align-items: center;
   width: 1100px;
-  height: 35px;
+  height: 90px;
   margin-top: 10px;
 }
 .require input {
@@ -118,24 +118,29 @@ code {
 .elements {
   display: flex;
   width: 1100px;
-  height: 35px;
+  height: 60px;
   margin: 3px 0px;
-  border: 0.5px solid rgb(48, 48, 47);
+  align-items: center;
+  /* border: 0.5px solid rgb(48, 48, 47); */
 }
 
 .check {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 35px;
-  height: 35px;
-  border-right: 0.5px solid black;
-  background-color: rgb(217, 221, 224);
+  width: 50px;
+  height: 50px;
+  /* border: 0.5px solid black; */
+  /* border-radius: 3px; */
+  /* font-size: 5rem; */
+  /* background-color: rgb(117, 140, 158); */
 }
 
 .check input {
-  width: 18px;
-  height: 18px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  font-size: 28px;
 }
 
 .check_f {
@@ -149,7 +154,7 @@ code {
 .elemetns-content {
   display: flex;
   width: 1065px;
-  height: 35px;
+  height: 54px;
   justify-content: space-between;
   align-items: center;
 }
@@ -168,11 +173,13 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(238, 110, 110);
-  width: 35px;
-  height: 35px;
-  font-size: 28px;
-  border-left: 0.5px solid black;
+  /* background-color: rgb(238, 110, 110); */
+  width: 50px;
+  height: 50px;
+  font-size: 48px;
+  color: red;
+  border: 0.5px solid black;
+  border-radius: 3px;
 }
 
 .delete:hover {

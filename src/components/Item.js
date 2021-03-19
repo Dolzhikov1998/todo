@@ -1,7 +1,17 @@
 import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import Icon from '@material-ui/core/Icon';
 
+const useStyles = makeStyles(() => ({
+    root: {
+      width: "780px"
+    },
+  }));
 
 function Item(props){
     const { todo, 
@@ -11,37 +21,41 @@ function Item(props){
 
     const [stateCheck, setStateCheck] = useState(todo.checked)
     const [stateTitle, setStateTitle] = useState(todo.title)
-
-    const classes = ['elemetns-content']
-
-    if(stateCheck){
-        classes.push('done')
-    }  
-
+     
+    const styleInput = useStyles()
     return(
         <div className = "elements" >
             <div className = "check" >
-                <input type = "checkbox" 
-                className = "check_f"
-                checked = {stateCheck}
-                onChange = {() => {
-                    changeCheckedTodos(todo.id)
-                    setStateCheck(!stateCheck)
-                }}/>
+            <Checkbox
+            name = "checkedB"
+            color = "secondary"
+            checked = {stateCheck}
+            onChange = {() => {
+                changeCheckedTodos(todo.id)
+                setStateCheck(!stateCheck)
+            }}/>
             </div>
-            <div className = { classes.join(' ') }>
-                <div className="a">
+            <div className = "elemetns-content">
+                <div className = "a">
                     &#160;&#160;&#160;
-                    <TextField value = {stateTitle}
-                                onChange = {event =>{
-                                    setStateTitle(event.target.value)
-                                    changeTitle(stateTitle, todo.id)}}>
+                    <TextField 
+                    id = "standard-basic" 
+                    variant = "standard"
+                    className = {styleInput.root} 
+                    value = {stateTitle}
+                    onChange = {event => {setStateTitle(event.target.value)
+                                         changeTitle(stateTitle, todo.id)}}>
                     </TextField>&#160;&#160;&#160;
                     <Box>{todo.date}</Box>
                 </div>
-            
-                            {/* <p  className = "text_cont">{todo.title}&#160;&#160;&#160;<small>{todo.date}</small></p> */}
-                <div className = "delete" onClick={ () => {deleteItem(todo.id)}}>&times;</div>
+        
+                <Button 
+                variant = "contained" 
+                color = "secondary" 
+                onClick = { () => {deleteItem(todo.id)}}
+                >
+                    <Icon><DeleteForeverIcon/></Icon>
+                </Button>
             </div>
         </div>
     )

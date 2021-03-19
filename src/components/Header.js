@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import TextField from '@material-ui/core/TextField';
 
 function Header({addItem}){
     const [stateInp, setStateInp] = useState('')
@@ -6,27 +7,25 @@ function Header({addItem}){
 
 return(
     <div className = "require">
-        <input type = "text" 
-        placeholder = "Добавьте задачу ..." 
-        className = "inp_require"
-        onChange = {event => setStateInp(event.target.value)}
+
+        <TextField 
+        id="outlined-basic" 
+        label="Введите задачу" 
+        variant="outlined"
         value = {stateInp}
+        onChange = {event => setStateInp(event.target.value)}
         onKeyDown = {event=>{
             if(event.key === 'Enter'){
-                addItem({id:counterForID, title:stateInp, checked:false, status: 'undone', date: new Date().toLocaleString()})
-                setcounterForID(counterForID + 1)
-                setStateInp('') 
+                if(stateInp === '') alert('Ничего нет!')
+                else {
+                    addItem({id:counterForID, title:stateInp, checked:false, status: 'undone', date: new Date().toLocaleString()})
+                    setcounterForID(counterForID + 1)
+                    setStateInp('') 
+                }
+                
             }
         }}
-        >
-        </input>
-        <div className = "add" onClick = {() => {
-                addItem({id:counterForID, title:stateInp, checked:false, status:'undone', date: new Date().toLocaleString()})
-                setcounterForID(counterForID + 1)
-                setStateInp('')  
-        }}>
-            <img src = "./add.png" alt = "#"/>
-        </div>
+         />
     </div>
 )
 }
