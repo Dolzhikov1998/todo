@@ -9,7 +9,7 @@ import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles(() => ({
     root: {
-      width: "780px"
+      width: "750px"
     },
   }));
 
@@ -19,9 +19,9 @@ function Item(props){
             changeCheckedTodos,
             changeTitle} = props
 
-    const [stateCheck, setStateCheck] = useState(todo.checked)
-    const [stateTitle, setStateTitle] = useState(todo.title)
-     
+    const [stateCheck, setStateCheck] = useState(todo.done)
+    const [stateTitle, setStateTitle] = useState(todo.name)
+    //  console.log(todo)
     const styleInput = useStyles()
     return(
         <div className = "elements" >
@@ -31,7 +31,7 @@ function Item(props){
             color = "secondary"
             checked = {stateCheck}
             onChange = {() => {
-                changeCheckedTodos(todo.id)
+                changeCheckedTodos(todo.uuid)
                 setStateCheck(!stateCheck)
             }}/>
             </div>
@@ -42,17 +42,17 @@ function Item(props){
                     id = "standard-basic" 
                     variant = "standard"
                     className = {styleInput.root} 
-                    value = {stateTitle}
+                    value = {todo.name}
                     onChange = {event => {setStateTitle(event.target.value)
-                                         changeTitle(stateTitle, todo.id)}}>
+                                         changeTitle(stateTitle, todo.uuid)}}>
                     </TextField>&#160;&#160;&#160;
-                    <Box>{todo.date}</Box>
+                    <Box>{todo.createdAt}</Box>
                 </div>
         
                 <Button 
                 variant = "contained" 
                 color = "secondary" 
-                onClick = { () => {deleteItem(todo.id)}}
+                onClick = { () => {deleteItem(todo.uuid)}}
                 >
                     <Icon><DeleteForeverIcon/></Icon>
                 </Button>

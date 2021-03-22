@@ -18,7 +18,7 @@ return(
             if(event.key === 'Enter'){
                 if(stateInp === '') alert('Ничего нет!')
                 else {
-                    addItem({id:counterForID, title:stateInp, checked:false, status: 'undone', date: new Date().toLocaleString()})
+                    addItem({name:stateInp, done:false})
                     setcounterForID(counterForID + 1)
                     setStateInp('') 
                 }

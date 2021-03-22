@@ -1,25 +1,42 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {addTask, deleteTask, getTask} from './services/userServices'
+
+
 import Header from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
 import MyPaginations from './components/Paginations'
 
 
+
 function App() {
 const [todos, setTodos] = useState([])
+const [arr, setArr] = useState(true)
 const [statusTodo, setStatusTodo] = useState('all')
 const [stateDate, setStateDate] = useState(false)
 const [statePag, setStatePag] = useState(0)
 
 
-function addNewItem(newItem){
-  setTodos([...todos, newItem])
+useEffect( async () => {
+  const response = await getTask(6)
+  // if(response.status === 200){
+    setTodos(response.data)
+  // }
+},[arr])
+
+
+async function addNewItem(newItem){
+  const response = await addTask(6, {name: newItem.name, done: newItem.done})
+  // if(response.status === 200){
+    setArr(!arr)
+  // }
 }
 
-function deleteItem(idDeleteItem){
-  setTodos(
-    todos.filter(item => item.id !== idDeleteItem)
-  )
+async function deleteItem(idDeleteItem){
+  const response = await deleteTask(6, idDeleteItem)
+  // if( response.status === 204){
+    setArr(!arr)
+  // }
 }
 
 function filters(statusItem){
