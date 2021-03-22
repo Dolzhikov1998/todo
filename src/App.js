@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {addTask, deleteTask, getTask} from './services/userServices'
+import {addTask, deleteTask, getTask, checkDone} from './services/userServices'
 
 
 import Header from './components/Header'
@@ -11,7 +11,6 @@ import MyPaginations from './components/Paginations'
 
 function App() {
 const [todos, setTodos] = useState([])
-const [arr, setArr] = useState(true)
 const [statusTodo, setStatusTodo] = useState('all')
 const [stateDate, setStateDate] = useState(false)
 const [statePag, setStatePag] = useState(0)
@@ -19,23 +18,27 @@ const [statePag, setStatePag] = useState(0)
 
 useEffect( async () => {
   const response = await getTask(6)
-  // if(response.status === 200){
+  if(response.status === 200){
     setTodos(response.data)
-  // }
-},[arr])
+  }
+},[])
 
 
 async function addNewItem(newItem){
   const response = await addTask(6, {name: newItem.name, done: newItem.done})
-  // if(response.status === 200){
-    setArr(!arr)
-  // }
+   if(response.status === 200){
+    setTodos([...todos, {
+    uuid: response.data.uuid, 
+    name: response.data.name, 
+    done: response.data.done, 
+    createdAt: response.data.createdAt} ])
+   }
 }
 
 async function deleteItem(idDeleteItem){
   const response = await deleteTask(6, idDeleteItem)
   // if( response.status === 204){
-    setArr(!arr)
+    setTodos(todos.filter(item => item.uuid != idDeleteItem))
   // }
 }
 
@@ -57,18 +60,19 @@ function changeTitle(value, id){
   })
 }
 
-function changeCheckedTodosItem(idItem){
-  setTodos(
-    todos.filter(item => {
-      if(item.id === idItem){
-        item.checked = !item.checked
-        if(item.status === 'done')
-          item.status = 'undone'
-          else item.status = 'done'
-      }
-      return item
-    })
-  )
+async function changeCheckedTodosItem(idItem){
+  const check = todos.find( item =>item.uuid === idItem)
+  console.log(check.done)
+  const response = await checkDone(6, idItem, {done:!check.done})
+  // if(response.status === 200){
+    setTodos(
+      todos.filter(item => {
+        if(item.uuid === idItem){
+          item.done = response.data.done
+        }
+        return item
+      })) 
+// }
 }
 
 const handlerPagin = (e, statePag) => {

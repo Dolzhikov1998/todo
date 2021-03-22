@@ -27,8 +27,9 @@ const API_URL = 'https://todo-api-learning.herokuapp.com/'
 
 export const addTask = async (id, record) => {
     try{
-        return await axios.post(`https://todo-api-learning.herokuapp.com/v1/task/${id}`, record)
-        // console.log(response)
+        const response = await axios.post(`https://todo-api-learning.herokuapp.com/v1/task/${id}`, record)
+        //   console.log(response)
+        return response
     }
     catch(e){
         console.log(e)
@@ -47,9 +48,19 @@ export const getTask = async (id) => {
 }
 
 
-export const deleteTask = async (id, idTask) =>{
+export const deleteTask = async (id, idTask ) =>{
     try{
         await axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/${id}/${idTask}`)
+    }
+    catch(e){
+        console.log(e)
+    }
+}
+
+export const checkDone = async(id, idTask, record) => {
+    try{
+       const response = await axios.patch(`https://todo-api-learning.herokuapp.com/v1/task/${id}/${idTask}`, record)
+       return response
     }
     catch(e){
         console.log(e)
