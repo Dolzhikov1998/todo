@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import Checkbox from '@material-ui/core/Checkbox';
@@ -13,6 +13,7 @@ const useStyles = makeStyles(() => ({
     },
   }));
 
+
 function Item(props){
     const { todo, 
             deleteItem, 
@@ -21,8 +22,13 @@ function Item(props){
 
     const [stateCheck, setStateCheck] = useState(todo.done)
     const [stateTitle, setStateTitle] = useState(todo.name)
-    //  console.log(todo)
+
     const styleInput = useStyles()
+
+    useEffect(() => {
+        changeTitle(stateTitle, todo.uuid)
+    },[stateTitle])
+
     return(
         <div className = "elements" >
             <div className = "check" >
@@ -42,9 +48,9 @@ function Item(props){
                     id = "standard-basic" 
                     variant = "standard"
                     className = {styleInput.root} 
-                    value = {todo.name}
+                    value = {stateTitle}
                     onChange = {event => {setStateTitle(event.target.value)
-                                         changeTitle(stateTitle, todo.uuid)}}>
+                                          }}>
                     </TextField>&#160;&#160;&#160;
                     <Box>{todo.createdAt}</Box>
                 </div>

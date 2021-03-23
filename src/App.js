@@ -39,6 +39,9 @@ async function deleteItem(idDeleteItem){
   const response = await deleteTask(6, idDeleteItem)
   // if(response.status === 204){
     setTodos(todos.filter(item => item.uuid != idDeleteItem))
+    if(statePag > todos.length/5){
+      setStatePag(statePag-1)
+    }
   // }
 }
 
@@ -53,17 +56,21 @@ function filtersForDate(valueDate){
 }
 
 async function changeTitle(value, idItem){
-  todos.map(item => {
-    if(item.uuid === idItem){
-      item.name = value
-    }
-  })
+  const response = await checkTask(6, idItem, {name: value})
+
+  if(response.status === 200){
+    todos.map(item => {
+      if(item.uuid === idItem){
+        item.name = value
+      }
+    })
+  }
 }
 
 async function changeCheckedTodosItem(idItem){
   const check = todos.find( item => item.uuid === idItem)
-  console.log(check.done)
   const response = await checkTask(6, idItem, {done: !check.done})
+
   if(response.status === 200){
     setTodos(
       todos.filter(item => {
