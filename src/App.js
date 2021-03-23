@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {addTask, deleteTask, getTask, checkDone} from './services/userServices'
+import {addTask, deleteTask, getTask, checkTask} from './services/userServices'
 
 
 import Header from './components/Header'
@@ -37,7 +37,7 @@ async function addNewItem(newItem){
 
 async function deleteItem(idDeleteItem){
   const response = await deleteTask(6, idDeleteItem)
-  // if( response.status === 204){
+  // if(response.status === 204){
     setTodos(todos.filter(item => item.uuid != idDeleteItem))
   // }
 }
@@ -52,19 +52,19 @@ function filtersForDate(valueDate){
   setStateDate(valueDate)
 }
 
-function changeTitle(value, id){
+async function changeTitle(value, idItem){
   todos.map(item => {
-    if(item.id === id){
-      item.title = value
+    if(item.uuid === idItem){
+      item.name = value
     }
   })
 }
 
 async function changeCheckedTodosItem(idItem){
-  const check = todos.find( item =>item.uuid === idItem)
+  const check = todos.find( item => item.uuid === idItem)
   console.log(check.done)
-  const response = await checkDone(6, idItem, {done:!check.done})
-  // if(response.status === 200){
+  const response = await checkTask(6, idItem, {done: !check.done})
+  if(response.status === 200){
     setTodos(
       todos.filter(item => {
         if(item.uuid === idItem){
@@ -72,7 +72,7 @@ async function changeCheckedTodosItem(idItem){
         }
         return item
       })) 
-// }
+}
 }
 
 const handlerPagin = (e, statePag) => {

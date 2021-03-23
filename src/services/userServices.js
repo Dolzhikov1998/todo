@@ -57,7 +57,7 @@ export const deleteTask = async (id, idTask ) =>{
     }
 }
 
-export const checkDone = async(id, idTask, record) => {
+export const checkTask = async(id, idTask, record) => {
     try{
        const response = await axios.patch(`https://todo-api-learning.herokuapp.com/v1/task/${id}/${idTask}`, record)
        return response

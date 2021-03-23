@@ -12,10 +12,10 @@ function Filters(props){
     return(
         <div className="containerForFiltersBtn">
             <div>
-            <Button variant = "outlined" color = "primary" onClick = {() => filters('done')}>
+            <Button variant = "outlined" color = "primary" onClick = {() => filters('true')}>
                 Done
             </Button>
-            <Button variant = "outlined" color = "secondary" onClick = {() => filters('undone')}>
+            <Button variant = "outlined" color = "secondary" onClick = {() => filters('false')}>
                 Undone
             </Button>
             <Button variant = "outlined" color = "default" onClick = {() => filters('all')}>

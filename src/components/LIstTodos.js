@@ -13,43 +13,37 @@ function ListTodos(props){
         statePag
     } = props
 
-     console.log(todos)
-    // const sortDateUp = (a, b) => {
-    //     if(a.date < b.date) return 1
-    //     else if(a.date > b.date) return -1
-    //     else if(a.date === b.date) return 0
-    // }
-    // const sortDateDown = (a, b) => {
-    //     if(a.date > b.date) return 1
-    //     else if(a.date < b.date) return -1
-    //     else if(a.date === b.date) return 0
-    // }
+    const sortDateUp = (a, b) => {
+        if(a.createdAt < b.createdAt) return 1
+        else if(a.createdAt > b.createdAt) return -1
+        else if(a.createdAt === b.createdAt) return 0
+    }
+    const sortDateDown = (a, b) => {
+        if(a.createdAt > b.createdAt) return 1
+        else if(a.createdAt < b.createdAt) return -1
+        else if(a.createdAt === b.createdAt) return 0
+    }
 
-    // const filterTodoForDate = () =>{
-    //         return todos.sort(stateDate ? sortDateUp : sortDateDown)
-    // }
+    const filterTodoForDate = () =>{
+            return todos.sort(stateDate ? sortDateUp : sortDateDown)
+    }
     
     const filters = () =>{
-    //     if(statusTodos !== 'all')
-    //     {
-    //         return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map(todo => {
-    //                   if(todo.status === statusTodos){
-    //                     return (<Item 
-    //                     key = {todo.id} 
-    //                     todo = {todo}  
-    //                     deleteItem = {deleteItem} 
-    //                     changeTitle = {changeTitle}  
-    //                     changeCheckedTodos = {changeCheckedTodosItem}/>)
-    //                   }
-    //                 })
-    //     }
+        if(statusTodos !== 'all')
+        {
+            return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map(todo => {
+                      if(todo.done === eval(statusTodos)){
+                        return (<Item 
+                        key = {todo.id} 
+                        todo = {todo}  
+                        deleteItem = {deleteItem} 
+                        changeTitle = {changeTitle}  
+                        changeCheckedTodos = {changeCheckedTodosItem}/>)
+                      }
+                    })
+        }
         
-            
-    
-    // return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5))
-           
-    // console.log(todos)
-    return todos.map( todo => (<Item 
+    return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map( todo => (<Item 
                 key = {todo.uuid} 
                 todo = {todo}  
                 deleteItem = {deleteItem}
