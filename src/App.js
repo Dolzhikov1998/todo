@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
 import MyPaginations from './components/Paginations'
+import AlertErr from './components/AlertErr'
 
 
 
@@ -14,35 +15,37 @@ const [todos, setTodos] = useState([])
 const [statusTodo, setStatusTodo] = useState('all')
 const [stateDate, setStateDate] = useState(false)
 const [statePag, setStatePag] = useState(0)
+const [err, setErr] = useState('')
 
 
-useEffect( async () => {
-  const response = await getTask(6)
-  if(response.status === 200){
-    setTodos(response.data)
-  }
+useEffect(() =>{
+  async  function func (){
+    const response = await getTask(6)
+    if(response.status === 200){
+      setTodos(response.data)
+    }} 
+  func()
 },[])
 
 
 async function addNewItem(newItem){
   const response = await addTask(6, {name: newItem.name, done: newItem.done})
    if(response.status === 200){
-    setTodos([...todos, {
-    uuid: response.data.uuid, 
-    name: response.data.name, 
-    done: response.data.done, 
-    createdAt: response.data.createdAt} ])
+    setTodos([...todos, {...response.data}])
    }
+   setErr(response.message)
 }
 
 async function deleteItem(idDeleteItem){
   const response = await deleteTask(6, idDeleteItem)
-  // if(response.status === 204){
-    setTodos(todos.filter(item => item.uuid != idDeleteItem))
-    if(statePag > todos.length/5){
+  if(response.status === 204){
+    setTodos(todos.filter(item => item.uuid !== idDeleteItem))
+    
+    if(statePag === (todos.length-1)/5){
       setStatePag(statePag-1)
     }
-  // }
+  }
+  setErr(response.message)
 }
 
 function filters(statusItem){
@@ -56,21 +59,22 @@ function filtersForDate(valueDate){
 }
 
 async function changeTitle(value, idItem){
-  const response = await checkTask(6, idItem, {name: value})
+   const response = await checkTask(6, idItem, {name: value})
 
   if(response.status === 200){
     todos.map(item => {
       if(item.uuid === idItem){
         item.name = value
       }
+      return item
     })
   }
+  setErr(response.message)
 }
 
 async function changeCheckedTodosItem(idItem){
   const check = todos.find( item => item.uuid === idItem)
   const response = await checkTask(6, idItem, {done: !check.done})
-
   if(response.status === 200){
     setTodos(
       todos.filter(item => {
@@ -80,6 +84,7 @@ async function changeCheckedTodosItem(idItem){
         return item
       })) 
 }
+setErr(response.message)
 }
 
 const handlerPagin = (e, statePag) => {
@@ -88,6 +93,9 @@ const handlerPagin = (e, statePag) => {
   else
     setStatePag(statePag - 1)
 }
+// useEffect(() =>{
+//   return <AlertErr err = {err}/>
+// },[err])
 
   return (
     
@@ -111,6 +119,7 @@ const handlerPagin = (e, statePag) => {
         <MyPaginations 
         todos = {todos}
         handlerPagin = {handlerPagin}/>
+        <AlertErr err = {err}/>
       </div>
   );
 }

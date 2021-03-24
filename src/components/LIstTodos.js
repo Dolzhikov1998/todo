@@ -29,29 +29,27 @@ function ListTodos(props){
     }
     
     const filters = () =>{
-        if(statusTodos !== 'all')
-        {
-            return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map(todo => {
-                      if(todo.done === eval(statusTodos)){
-                        return (<Item 
-                        key = {todo.id} 
-                        todo = {todo}  
-                        deleteItem = {deleteItem} 
-                        changeTitle = {changeTitle}  
-                        changeCheckedTodos = {changeCheckedTodosItem}/>)
-                      }
-                    })
-        }
-        
-    return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map( todo => (<Item 
-                key = {todo.uuid} 
-                todo = {todo}  
-                deleteItem = {deleteItem}
-                changeTitle = {changeTitle}   
-                changeCheckedTodos = {changeCheckedTodosItem}
-            />))
-        
-       
+            if(statusTodos !== 'all')
+            {
+                return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map(todo => {
+                          if(todo.done === eval(statusTodos)){
+                            return (<Item 
+                            key = {todo.uuid} 
+                            todo = {todo}  
+                            deleteItem = {deleteItem} 
+                            changeTitle = {changeTitle}  
+                            changeCheckedTodos = {changeCheckedTodosItem}/>)
+                          }
+                        })
+            }
+            
+        return filterTodoForDate().filter((_,index)=> (index >= (statePag * 5))&&(index < (statePag * 5) +5)).map( todo => (<Item 
+                    key = {todo.uuid} 
+                    todo = {todo}  
+                    deleteItem = {deleteItem}
+                    changeTitle = {changeTitle}   
+                    changeCheckedTodos = {changeCheckedTodosItem}
+                />))
     }
 
     return(

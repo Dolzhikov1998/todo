@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
   }));
 
 
+
 function Item(props){
     const { todo, 
             deleteItem, 
@@ -25,10 +26,10 @@ function Item(props){
 
     const styleInput = useStyles()
 
-    useEffect(() => {
+    useEffect(() =>{
         changeTitle(stateTitle, todo.uuid)
     },[stateTitle])
-
+    
     return(
         <div className = "elements" >
             <div className = "check" >
@@ -50,7 +51,7 @@ function Item(props){
                     className = {styleInput.root} 
                     value = {stateTitle}
                     onChange = {event => {setStateTitle(event.target.value)
-                                          }}>
+                                         }}>
                     </TextField>&#160;&#160;&#160;
                     <Box>{todo.createdAt}</Box>
                 </div>

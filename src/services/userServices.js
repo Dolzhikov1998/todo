@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 const API_URL = 'https://todo-api-learning.herokuapp.com/'
 
 const instance = axios.create(
@@ -11,55 +12,49 @@ const instance = axios.create(
     }
 )
 
-const request  = async (method, api, data) => {
-    try{
-        return await instance({
-            method,
-            url:api,
-            data
-        })
-    }
-    catch(e){
-        console.log(e)
-    }
-}
+
+// const request  = async (method, api, data) => {
+//     try{
+//         return await instance({
+//             method,
+//             url:api,
+//             data
+//         })
+//     }
+//     catch(e){
+//         console.log(e)
+//     }
+// }
 
 
 export const addTask = async (id, record) => {
-    try{
-        const response = await axios.post(`https://todo-api-learning.herokuapp.com/v1/task/${id}`, record)
+        const response = await instance.post(`v1/task/${id}`, record)
         return response
-    }
-    catch(e){
-        console.log(e)
-    }  
 }
 
 export const getTask = async (id) => {
-    try{
-        return await axios.get(`https://todo-api-learning.herokuapp.com/v1/tasks/${id}`)
-    }
-    catch(e){
-        console.log(e)
-    }
-         
+        const response = await instance.get(`v1/tasks/${id}`)
+        return response  
 }
 
-export const deleteTask = async (id, idTask ) =>{
-    try{
-        await axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/${id}/${idTask}`)
-    }
-    catch(e){
-        console.log(e)
-    }
+export const deleteTask = async (id, idTask) =>{
+        const response = await instance.delete(`v1/task/${id}/${idTask}`)
+        return response
 }
 
 export const checkTask = async(id, idTask, record) => {
-    try{
-       const response = await axios.patch(`https://todo-api-learning.herokuapp.com/v1/task/${id}/${idTask}`, record)
-       return response
-    }
-    catch(e){
-        console.log(e)
-    }
+        const response = await instance.patch(`v1/task/${id}/${idTask}`, record)
+        return response 
 }
+
+instance.interceptors.response.use(
+    response => {
+        if(response.status !== 200 && response.status !== 204){
+            return alert(`Error: ${response.status}`)
+        }
+        return response
+    },
+    err => {
+        // alert(err)
+        return err}
+)
