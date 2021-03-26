@@ -26,9 +26,9 @@ function Item(props){
 
     const styleInput = useStyles()
 
-    useEffect(() =>{
-        changeTitle(stateTitle, todo.uuid)
-    },[stateTitle])
+    // useEffect(() =>{
+    //     changeTitle(stateTitle, todo.uuid)
+    // },[stateTitle])
     
     return(
         <div className = "elements" >
@@ -50,10 +50,12 @@ function Item(props){
                     variant = "standard"
                     className = {styleInput.root} 
                     value = {stateTitle}
-                    onChange = {event => {setStateTitle(event.target.value)
+                    onChange = {event => {
+                            setStateTitle(event.target.value)
+                            changeTitle(stateTitle, todo.uuid)
                                          }}>
                     </TextField>&#160;&#160;&#160;
-                    <Box>{todo.createdAt}</Box>
+                    <Box>{todo.date}</Box>
                 </div>
         
                 <Button 

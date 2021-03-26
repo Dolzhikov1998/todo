@@ -14,14 +14,14 @@ function ListTodos(props){
     } = props
 
     const sortDateUp = (a, b) => {
-        if(a.createdAt < b.createdAt) return 1
-        else if(a.createdAt > b.createdAt) return -1
-        else if(a.createdAt === b.createdAt) return 0
+        if(a.date < b.date) return 1
+        else if(a.date > b.date) return -1
+        else if(a.date === b.date) return 0
     }
     const sortDateDown = (a, b) => {
-        if(a.createdAt > b.createdAt) return 1
-        else if(a.createdAt < b.createdAt) return -1
-        else if(a.createdAt === b.createdAt) return 0
+        if(a.date > b.date) return 1
+        else if(a.date < b.date) return -1
+        else if(a.date === b.date) return 0
     }
 
     const filterTodoForDate = () =>{

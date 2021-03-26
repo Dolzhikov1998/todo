@@ -17,19 +17,19 @@ const [stateDate, setStateDate] = useState(false)
 const [statePag, setStatePag] = useState(0)
 const [err, setErr] = useState('')
 
-
-useEffect(() =>{
-  async  function func (){
-    const response = await getTask(6)
+console.log(todos)
+useEffect(() => { async  function func (){
+    const response = await getTask()
+    console.log(response)
     if(response.status === 200){
       setTodos(response.data)
-    }} 
+    }
+  } 
   func()
 },[])
 
-
 async function addNewItem(newItem){
-  const response = await addTask(6, {name: newItem.name, done: newItem.done})
+  const response = await addTask({name: newItem.name, done: newItem.done})
    if(response.status === 200){
     setTodos([...todos, {...response.data}])
    }
@@ -37,8 +37,8 @@ async function addNewItem(newItem){
 }
 
 async function deleteItem(idDeleteItem){
-  const response = await deleteTask(6, idDeleteItem)
-  if(response.status === 204){
+  const response = await deleteTask(idDeleteItem)
+  if(response.status === 200){
     setTodos(todos.filter(item => item.uuid !== idDeleteItem))
     
     if(statePag === (todos.length-1)/5){
@@ -59,7 +59,7 @@ function filtersForDate(valueDate){
 }
 
 async function changeTitle(value, idItem){
-   const response = await checkTask(6, idItem, {name: value})
+   const response = await checkTask(idItem, {name: value})
 
   if(response.status === 200){
     todos.map(item => {
@@ -74,7 +74,8 @@ async function changeTitle(value, idItem){
 
 async function changeCheckedTodosItem(idItem){
   const check = todos.find( item => item.uuid === idItem)
-  const response = await checkTask(6, idItem, {done: !check.done})
+  const response = await checkTask(idItem, {done: !check.done})
+
   if(response.status === 200){
     setTodos(
       todos.filter(item => {
@@ -82,7 +83,8 @@ async function changeCheckedTodosItem(idItem){
           item.done = response.data.done
         }
         return item
-      })) 
+      }
+      )) 
 }
 setErr(response.message)
 }
