@@ -2,7 +2,8 @@ import axios from 'axios'
 
 
 // const API_URL = 'https://todo-api-learning.herokuapp.com/'
-const API_URL = 'http://localhost:3000/api/'
+// const API_URL = 'http://localhost:3000/api/'
+const API_URL = 'https://calm-earth-60546.herokuapp.com/'
 
 
 const instance = axios.create(
@@ -63,12 +64,12 @@ export const getTask = async () => {
 }
 
 export const deleteTask = async (idTask) =>{
-    const response = await instance.delete(`card/${idTask}`)
+    const response = await instance.delete(`cards/${idTask}`)
     return response
 }
 
 export const checkTask = async(idTask, record) => {
-    const response = await instance.patch(`card/${idTask}`, record)
+    const response = await instance.patch(`cards/${idTask}`, record)
     return response 
 }
 
