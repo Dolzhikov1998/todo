@@ -38,7 +38,7 @@ async function addNewItem(newItem){
 
 async function deleteItem(idDeleteItem){
   const response = await deleteTask(idDeleteItem)
-  if(response.status === 200){
+  if(response.status === 204){
     setTodos(todos.filter(item => item.uuid !== idDeleteItem))
     
     if(statePag === (todos.length-1)/5){
@@ -74,7 +74,7 @@ async function changeTitle(value, idItem){
 
 async function changeCheckedTodosItem(idItem){
   const check = todos.find( item => item.uuid === idItem)
-  const response = await checkTask(idItem, {done: !check.done})
+  const response = await checkTask(idItem, {name:check.name, done: !check.done})
 
   if(response.status === 200){
     setTodos(

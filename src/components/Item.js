@@ -37,7 +37,7 @@ function Item(props){
             name = "checkedB"
             color = "secondary"
             checked = {stateCheck}
-            onChange = {() => {
+            onChange = {(e) => {
                 changeCheckedTodos(todo.uuid)
                 setStateCheck(!stateCheck)
             }}/>

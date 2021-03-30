@@ -3,15 +3,15 @@ import axios from 'axios'
 
 // const API_URL = 'https://todo-api-learning.herokuapp.com/'
 // const API_URL = 'http://localhost:3000/api/'
-const API_URL = 'https://calm-earth-60546.herokuapp.com/'
+// const URL = 'https://calm-earth-60546.herokuapp.com/api/'
 
-
+const {REACT_APP_URL} = process.env
+console.log("ASDASDAD"+REACT_APP_URL)
 const instance = axios.create(
     {
-        baseURL: API_URL,
+        baseURL: REACT_APP_URL,
         headers: {
             'Content-Type': 'application/json',
-            // 'Access-Control-Allow-Origin' : 'http://localhost:3000/api/'
         }
     }
 )
@@ -29,28 +29,6 @@ const instance = axios.create(
 //         console.log(e)
 //     }
 // }
-
-
-// export const addTask = async (id, record) => {
-//         const response = await instance.post(`v1/task/${id}`, record)
-//         return response
-// }
-
-// export const getTask = async (id) => {
-//         const response = await instance.get(`v1/tasks/${id}`)
-//         return response  
-// }
-
-// export const deleteTask = async (id, idTask) =>{
-//         const response = await instance.delete(`v1/task/${id}/${idTask}`)
-//         return response
-// }
-
-// export const checkTask = async(id, idTask, record) => {
-//         const response = await instance.patch(`v1/task/${id}/${idTask}`, record)
-//         return response 
-// }
-
 
 
 export const addTask = async (record) => {
