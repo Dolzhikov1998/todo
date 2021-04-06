@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
   function MyPaginations(props){
     const {
       todos,
-      handlerPagin
+      handlerPagin,
+      countTodos
     } = props
 
     const classes = useStyles();
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     return(
         <div className={classes.root}>
             <Pagination 
-            count={Math.ceil(todos.length/5)}
+            count={countTodos}
             onChange = {
               handlerPagin
             }

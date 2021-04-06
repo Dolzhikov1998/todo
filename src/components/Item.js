@@ -55,7 +55,7 @@ function Item(props){
                             changeTitle(stateTitle, todo.uuid)
                                          }}>
                     </TextField>&#160;&#160;&#160;
-                    <Box>{todo.date}</Box>
+                    <Box>{todo.createdAt}</Box>
                 </div>
         
                 <Button 

@@ -16,28 +16,29 @@ export const addTask = async (record) => {
     return response
 }
 
-export const getTask = async () => {
-    const response = await instance.get('card?page=0')
-    return response  
+export const getTask = async (params) => {
+    const response = await instance.get(`card?${params}`)
+    return response
 }
 
-export const deleteTask = async (idTask) =>{
+export const deleteTask = async (idTask) => {
     const response = await instance.delete(`card/${idTask}`)
     return response
 }
 
-export const checkTask = async(idTask, record) => {
+export const checkTask = async (idTask, record) => {
     const response = await instance.patch(`card/${idTask}`, record)
-    return response 
+    return response
 }
 
 instance.interceptors.response.use(
     response => {
-        if(response.status !== 200 && response.status !== 204){
+        if (response.status !== 200 && response.status !== 204) {
             return alert(`Error: ${response.status}`)
         }
         return response
     },
     err => {
-        return err}
+        return err
+    }
 )
