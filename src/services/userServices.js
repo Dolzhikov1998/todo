@@ -12,22 +12,22 @@ const instance = axios.create(
 )
 
 export const addTask = async (record) => {
-    const response = await instance.post(`cards`, record)
+    const response = await instance.post(`card`, record)
     return response
 }
 
 export const getTask = async () => {
-    const response = await instance.get('cards')
+    const response = await instance.get('card?page=0')
     return response  
 }
 
 export const deleteTask = async (idTask) =>{
-    const response = await instance.delete(`cards/${idTask}`)
+    const response = await instance.delete(`card/${idTask}`)
     return response
 }
 
 export const checkTask = async(idTask, record) => {
-    const response = await instance.patch(`cards/${idTask}`, record)
+    const response = await instance.patch(`card/${idTask}`, record)
     return response 
 }
 

@@ -17,12 +17,11 @@ const [stateDate, setStateDate] = useState(false)
 const [statePag, setStatePag] = useState(0)
 const [err, setErr] = useState('')
 
-console.log(todos)
 useEffect(() => { async  function func (){
     const response = await getTask()
-    console.log(response)
     if(response.status === 200){
-      setTodos(response.data)
+      console.log(response)
+      setTodos(response.data.rows)
     }
   } 
   func()
@@ -59,7 +58,8 @@ function filtersForDate(valueDate){
 }
 
 async function changeTitle(value, idItem){
-   const response = await checkTask(idItem, {name: value})
+  const check = todos.find( item => item.uuid === idItem)
+   const response = await checkTask(idItem, {name: value, done: check.done})
 
   if(response.status === 200){
     todos.map(item => {
@@ -95,9 +95,6 @@ const handlerPagin = (e, statePag) => {
   else
     setStatePag(statePag - 1)
 }
-// useEffect(() =>{
-//   return <AlertErr err = {err}/>
-// },[err])
 
   return (
     
