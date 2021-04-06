@@ -4,13 +4,10 @@ import Item from './Item'
 
 function ListTodos(props) {
     const {
-        stateDate,
-        statusTodos,
         todos,
         deleteItem,
         changeCheckedTodosItem,
-        changeTitle,
-        statePag
+        changeTitle
     } = props
 
     // const sortDateUp = (a, b) => {

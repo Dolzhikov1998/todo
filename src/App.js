@@ -42,15 +42,12 @@ function App() {
       if (todos.length < 5)
         setTodos([...todos, { ...response.data }])
     }
-    // setCountTodos(Math.ceil(response.data.count / 5))
+    setCountTodos(Math.ceil(response.data.countCards.count / 5))
     setErr(response.message)
   }
 
   async function deleteItem(idDeleteItem) {
     const response = await deleteTask(idDeleteItem)
-    // if (statePag === (todos.length - 1) / 5) {
-    //   setStatePag(statePag - 1)
-    // }
     if (response.status === 204) {
       const responseGet = await getTask(querystring.stringify({
         page: statePag,

@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
 
   function MyPaginations(props){
     const {
-      todos,
       handlerPagin,
       countTodos
     } = props
