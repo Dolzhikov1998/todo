@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { addTask, deleteTask, getTask, checkTask } from './services/userServices'
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 import Header from './components/Header'
 import Filters from './components/Filters'
@@ -135,33 +141,43 @@ function App() {
   }
 
   return (
+    <Router>
+      <Switch>
+        <Route path='/todo/reg'>
+          <Register />
+        </Route>
 
-    <div className="container">
+        <Route path='/todo/auth'>
+          <Auth />
+        </Route>
 
-      <Auth/>
-
-      {/* <Header addItem={addNewItem} />
-      <Filters
-        filters={filters}
-        filtersForDate={filtersForDate} />
-      <form className='content'>
-        {
-          <ListTodos
-            todos={todos}
-            deleteItem={deleteItem}
-            changeCheckedTodosItem={changeCheckedTodosItem}
-            statusTodos={statusTodo}
-            stateDate={stateDate}
-            changeTitle={changeTitle}
-            statePag={statePag} />
-        }
-      </form>
-      <MyPaginations
-        todos={todos}
-        countTodos={countTodos}
-        handlerPagin={handlerPagin} />
-      <AlertErr err={err} /> */}
-    </div>
+        <Route path='/todo/app'>
+          <div className="container">
+            <Header addItem={addNewItem} />
+            <Filters
+              filters={filters}
+              filtersForDate={filtersForDate} />
+            <form className='content'>
+              {
+                <ListTodos
+                  todos={todos}
+                  deleteItem={deleteItem}
+                  changeCheckedTodosItem={changeCheckedTodosItem}
+                  statusTodos={statusTodo}
+                  stateDate={stateDate}
+                  changeTitle={changeTitle}
+                  statePag={statePag} />
+              }
+            </form>
+            <MyPaginations
+              todos={todos}
+              countTodos={countTodos}
+              handlerPagin={handlerPagin} />
+            <AlertErr err={err} />
+          </div>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

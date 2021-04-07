@@ -7,6 +7,32 @@ import { makeStyles } from '@material-ui/core/styles'
 import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 
+
+function Auth() {
+    const style = useStyles()
+
+    return (
+        <Container fixed className={style.container}>
+            <FormGroup className={style.form}>
+                <h1>SIGN IN</h1>
+                <TextField id="standard-basic" label="Login" className={style.input} />
+                <TextField id="filled-password-input" label="Password" type="password" className={style.input} />
+
+                <Box component="span" m={1} className={style.box}>
+                    <Button variant="contained" color="primary">
+                        Sign In
+                    </Button>
+                    <Link underlineHover href='http://localhost:3000/todo/reg'>Sign Up</Link>
+                </Box>
+
+
+            </FormGroup>
+
+        </Container>
+    )
+}
+
+
 const useStyles = makeStyles(() => ({
     container: {
         display: 'flex',
@@ -31,31 +57,6 @@ const useStyles = makeStyles(() => ({
         alignItems: 'center'
     }
 }));
-
-
-function Auth() {
-    const style = useStyles()
-
-    return (
-        <Container fixed className={style.container}>
-            <FormGroup className={style.form}>
-                <h1>SIGN IN</h1>
-                <TextField id="standard-basic" label="Login" className={style.input} />
-                <TextField id="filled-password-input" label="Password" type="password" className={style.input} />
-
-                <Box component="span" m={1} className={style.box}>
-                    <Button variant="contained" color="primary">
-                        Sign In
-                    </Button>
-                    <Link underlineHover>Sign Up</Link>
-                </Box>
-
-
-            </FormGroup>
-
-        </Container>
-    )
-}
 
 
 export default Auth
