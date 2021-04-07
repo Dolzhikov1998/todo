@@ -7,6 +7,8 @@ import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
 import MyPaginations from './components/Paginations'
 import AlertErr from './components/AlertErr'
+import Register from './reg-auth/Register'
+import Auth from './reg-auth/Auth'
 
 const querystring = require('querystring');
 
@@ -135,7 +137,10 @@ function App() {
   return (
 
     <div className="container">
-      <Header addItem={addNewItem} />
+
+      <Auth/>
+
+      {/* <Header addItem={addNewItem} />
       <Filters
         filters={filters}
         filtersForDate={filtersForDate} />
@@ -155,7 +160,7 @@ function App() {
         todos={todos}
         countTodos={countTodos}
         handlerPagin={handlerPagin} />
-      <AlertErr err={err} />
+      <AlertErr err={err} /> */}
     </div>
   );
 }
