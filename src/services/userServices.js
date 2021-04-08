@@ -31,6 +31,12 @@ export const checkTask = async (idTask, record) => {
     return response
 }
 
+export const sendFormInfoUser = async (record) => {
+    const response = await instance.post(`user/` + record.typeRequest, record)
+    return response
+}
+
+
 instance.interceptors.response.use(
     response => {
         if (response.status !== 200 && response.status !== 204) {

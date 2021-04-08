@@ -48,7 +48,7 @@ function App() {
     const response = await addTask({ name: newItem.name })
     if (response.status === 200) {
       if (todos.length < 5)
-        setTodos([...todos, { ...response.data }])
+        setTodos([...todos, { ...response.data.card }])
     }
     setCountTodos(Math.ceil(response.data.countCards.count / 5))
     setErr(response.message)

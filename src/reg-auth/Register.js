@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
@@ -7,26 +7,66 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 
+import { sendFormInfoUser } from '../services/userServices'
 
 function Register() {
     const style = useStyles()
+
+    const [login, setLogin] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+
+    const sendForm = async () => {
+        const response = await sendFormInfoUser({
+            login: login,
+            password: password,
+            email: email,
+            typeRequest: 'reg'
+        })
+        console.log(response.data.msg)
+    }
 
     return (
         <Container fixed className={style.container}>
             <FormGroup className={style.form}>
                 <h1>SIGN UP</h1>
-                <TextField id="standard-basic" label="Login" className={style.input} />
-                <TextField id="filled-email-input" label="Email" className={style.input} />
-                <TextField id="filled-password-input" label="Password" type="password" className={style.input} />
+                <TextField
+                    id="filled-login-input"
+                    label="Login"
+                    className={style.input}
+                    value={login}
+                    onChange={event => {
+                        setLogin(event.target.value)
+                    }} />
+                <TextField
+                    id="filled-email-input"
+                    label="Email"
+                    className={style.input}
+                    value={email}
+                    onChange={event => {
+                        setEmail(event.target.value)
+                    }} />
+                <TextField
+                    id="filled-password-input"
+                    label="Password"
+                    type="password"
+                    className={style.input}
+                    value={password}
+                    onChange={event => {
+                        setPassword(event.target.value)
+                    }} />
 
                 <Box component="span" m={1} className={style.box}>
-                    <Button variant="contained" color="primary">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => sendForm()}>
                         Sign Up
-                </Button>
+                    </Button>
                     <Link underlineHover href='http://localhost:3000/todo/auth'>Sign In</Link>
                 </Box>
             </FormGroup>
-
         </Container>
     )
 }
