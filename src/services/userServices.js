@@ -2,42 +2,22 @@ import axios from 'axios'
 
 const url = process.env.REACT_APP_API
 
-const instance = axios.create(
+const instanceUser = axios.create(
     {
         baseURL: url,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         }
     }
 )
 
-export const addTask = async (record) => {
-    const response = await instance.post(`card`, record)
-    return response
-}
-
-export const getTask = async (params) => {
-    const response = await instance.get(`card?${params}`)
-    return response
-}
-
-export const deleteTask = async (idTask) => {
-    const response = await instance.delete(`card/${idTask}`)
-    return response
-}
-
-export const checkTask = async (idTask, record) => {
-    const response = await instance.patch(`card/${idTask}`, record)
-    return response
-}
-
 export const sendFormInfoUser = async (record) => {
-    const response = await instance.post(`user/` + record.typeRequest, record)
+    const response = await instanceUser.post(`user/` + record.typeRequest, record)
     return response
 }
 
 
-instance.interceptors.response.use(
+instanceUser.interceptors.response.use(
     response => {
         if (response.status !== 200 && response.status !== 204) {
             return alert(`Error: ${response.status}`)

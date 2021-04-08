@@ -24,7 +24,9 @@ function Register() {
             email: email,
             typeRequest: 'reg'
         })
-        console.log(response.data.msg)
+        console.log(response.data)
+
+        localStorage.setItem('token', response.data.token)
     }
 
     return (

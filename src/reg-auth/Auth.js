@@ -23,7 +23,9 @@ function Auth() {
             password: passwordAuth,
             typeRequest: 'auth'
         })
-        console.log(response.data.msg)
+        console.log(response)
+
+        localStorage.setItem('token', response.data.token)
     }
 
     return (

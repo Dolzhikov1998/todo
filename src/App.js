@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { addTask, deleteTask, getTask, checkTask } from './services/userServices'
+import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
 
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 import Header from './components/Header'
