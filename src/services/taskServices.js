@@ -7,7 +7,7 @@ const instance = axios.create(
         baseURL: url,
         headers: {
             'Content-Type': 'application/json',
-            'token': document.cookie
+            'token': localStorage.getItem('token')
         }
     }
 )

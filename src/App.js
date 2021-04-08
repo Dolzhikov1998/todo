@@ -7,6 +7,8 @@ import {
   Route
 } from "react-router-dom";
 
+import { Redirect } from 'react-router'
+
 import Header from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
