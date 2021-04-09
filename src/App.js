@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
-
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+
+import { makeStyles } from '@material-ui/core/styles'
 
 import { Redirect } from 'react-router'
 
@@ -22,6 +25,9 @@ const querystring = require('querystring');
 
 
 function App() {
+
+  const style = useStyles()
+
   const [todos, setTodos] = useState([])
   const [statusTodo, setStatusTodo] = useState('all')
   const [stateDate, setStateDate] = useState(false)
@@ -30,6 +36,8 @@ function App() {
   const [countTodos, setCountTodos] = useState(0)
   const [filterDone, setFilterDone] = useState('')
   const [filterDate, setFilterDate] = useState('asc')
+
+  // const [redirect, setRedirect] = useState(false)
 
   useEffect(() => {
     async function func() {
@@ -171,44 +179,79 @@ function App() {
   // }
 
   return (
-    <Router>
+    <Router >
       <Switch>
         <Route path='/todo/reg'>
-          <Register />
+          {
+            localStorage.getItem('token') ? <Redirect to='/todo/app' /> : <Register />
+          }
+
         </Route>
 
         <Route path='/todo/auth'>
-          <Auth />
+          {localStorage.getItem('token') ? <Redirect to='/todo/app' /> : <Auth />}
+
         </Route>
 
         <Route path='/todo/app'>
-          <div className="container">
-            <Header addItem={addNewItem} />
-            <Filters
-              filters={filters}
-              filtersForDate={filtersForDate} />
-            <form className='content'>
-              {
-                <ListTodos
-                  todos={todos}
-                  deleteItem={deleteItem}
-                  changeCheckedTodosItem={changeCheckedTodosItem}
-                  statusTodos={statusTodo}
-                  stateDate={stateDate}
-                  changeTitle={changeTitle}
-                  statePag={statePag} />
-              }
-            </form>
-            <MyPaginations
-              todos={todos}
-              countTodos={countTodos}
-              handlerPagin={handlerPagin} />
-            <AlertErr err={err} />
-          </div>
+
+          {
+            localStorage.getItem('token') ? <div className="container">
+              <Container fixed className={style.containerForBtn}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => localStorage.removeItem('token')}
+                  className={style.buttonLogOut}>
+                  Log Out
+                </Button>
+              </Container>
+
+              <Header addItem={addNewItem} />
+              <Filters
+                filters={filters}
+                filtersForDate={filtersForDate} />
+              <form className='content'>
+                {
+                  <ListTodos
+                    todos={todos}
+                    deleteItem={deleteItem}
+                    changeCheckedTodosItem={changeCheckedTodosItem}
+                    statusTodos={statusTodo}
+                    stateDate={stateDate}
+                    changeTitle={changeTitle}
+                    statePag={statePag} />
+                }
+              </form>
+              <MyPaginations
+                todos={todos}
+                countTodos={countTodos}
+                handlerPagin={handlerPagin} />
+              <AlertErr err={err} />
+            </div> : <Auth />
+          }
+
         </Route>
       </Switch>
     </Router>
   );
 }
+
+
+const useStyles = makeStyles(() => ({
+  buttonLogOut: {
+    width: '90px',
+    height: '30px',
+    fontSize: '10px',
+    marginTop: '20px'
+  },
+  containerForBtn: {
+    display: 'flex',
+    width: '100%',
+    height: '50px',
+    justifyContent: 'flex-end',
+    // flexDirection:'row'
+  }
+}));
 
 export default App;

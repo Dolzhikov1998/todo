@@ -1,9 +1,6 @@
 import axios from 'axios'
 import { controlToken } from '../services/controlToken'
 
-// import {newError} from '../App'
-
-
 const url = process.env.REACT_APP_API
 
 
@@ -16,8 +13,6 @@ const instance = axios.create(
         }
     }
 )
-
-
 
 export const addTask = async (record) => {
     if (controlToken()) {
@@ -36,11 +31,11 @@ export const getTask = async (params) => {
 }
 
 export const deleteTask = async (idTask) => {
-    // if (controlToken()) {
+    if (controlToken()) {
         const response = await instance.delete(`card/${idTask}`)
         return response
-    // }
-    // console.log('redirect')
+    }
+    console.log('redirect')
 }
 
 export const checkTask = async (idTask, record) => {
@@ -56,7 +51,6 @@ instance.interceptors.response.use(
         return response
     },
     err => {
-        // newError(err.response.data.error)
         return err
     }
 )

@@ -9,13 +9,11 @@ import Box from '@material-ui/core/Box'
 
 import { sendFormInfoUser } from '../services/userServices'
 
-
 function Auth() {
     const style = useStyles()
 
     const [loginAuth, setLoginAuth] = useState('')
     const [passwordAuth, setPasswordAuth] = useState('')
-
 
     const sendForm = async () => {
         const response = await sendFormInfoUser({
@@ -23,9 +21,11 @@ function Auth() {
             password: passwordAuth,
             typeRequest: 'auth'
         })
-        console.log(response)
 
-        localStorage.setItem('token', response.data.token)
+        if(response.data.token){
+            localStorage.setItem('token', response.data.token)
+        }
+
     }
 
     return (

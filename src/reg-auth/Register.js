@@ -8,6 +8,7 @@ import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 
 import { sendFormInfoUser } from '../services/userServices'
+import { Redirect } from 'react-router';
 
 function Register() {
     const style = useStyles()
@@ -27,6 +28,10 @@ function Register() {
         console.log(response.data)
 
         localStorage.setItem('token', response.data.token)
+
+        if (localStorage.getItem('token')) {
+            <Redirect to='/todo/app' />
+        }
 
     }
 
