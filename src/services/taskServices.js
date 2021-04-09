@@ -1,6 +1,11 @@
 import axios from 'axios'
+import { controlToken } from '../services/controlToken'
+
+import {newError} from '../App'
+
 
 const url = process.env.REACT_APP_API
+
 
 const instance = axios.create(
     {
@@ -12,34 +17,46 @@ const instance = axios.create(
     }
 )
 
+
+
 export const addTask = async (record) => {
-    const response = await instance.post(`card`, record)
-    return response
+    if (controlToken()) {
+        const response = await instance.post(`card`, record)
+        return response
+    }
+    console.log('redirect')
 }
 
 export const getTask = async (params) => {
-    const response = await instance.get(`card?${params}`)
-    return response
+    if (controlToken()) {
+        const response = await instance.get(`card?${params}`)
+        return response
+    }
+    console.log('redirect')
 }
 
 export const deleteTask = async (idTask) => {
-    const response = await instance.delete(`card/${idTask}`)
-    return response
+    // if (controlToken()) {
+        const response = await instance.delete(`card/${idTask}`)
+        return response
+    // }
+    // console.log('redirect')
 }
 
 export const checkTask = async (idTask, record) => {
-    const response = await instance.patch(`card/${idTask}`, record)
-    return response
+    if (controlToken()) {
+        const response = await instance.patch(`card/${idTask}`, record)
+        return response
+    }
+    console.log('redirect')
 }
 
 instance.interceptors.response.use(
     response => {
-        if (response.status !== 200 && response.status !== 204) {
-            return alert(`Error: ${response.status}`)
-        }
         return response
     },
     err => {
+        // newError(err.response.data.error)
         return err
     }
 )
