@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { controlToken } from '../services/controlToken'
 
-import {newError} from '../App'
+// import {newError} from '../App'
 
 
 const url = process.env.REACT_APP_API

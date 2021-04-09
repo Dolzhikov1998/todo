@@ -33,41 +33,57 @@ function App() {
 
   useEffect(() => {
     async function func() {
-      const response = await getTask(querystring.stringify({
-        page: statePag,
-        order: 'asc'
-      }))
-      if (response.status === 200) {
-        setTodos(response.data.rows)
-        setCountTodos(Math.ceil(response.data.count / 5))
+      try {
+        const response = await getTask(querystring.stringify({
+          page: statePag,
+          order: 'asc'
+        }))
+        if (response.status === 200) {
+          setTodos(response.data.rows)
+          setCountTodos(Math.ceil(response.data.count / 5))
+        }
+      } catch (e) {
+        console.log(e)
+        setErr(e.message)
       }
     }
     func()
   }, [])
 
   async function addNewItem(newItem) {
-    const response = await addTask({ name: newItem.name })
-    if (response.status === 200) {
-      if (todos.length < 5)
-        setTodos([...todos, { ...response.data.card }])
+    try {
+      const response = await addTask({ name: newItem.name })
+      if (response.status === 200) {
+        if (todos.length < 5)
+          setTodos([...todos, { ...response.data.card }])
+      }
+      setCountTodos(Math.ceil(response.data.countCards.count / 5))
+    } catch (e) {
+      console.log(e)
+      setErr(e.message)
     }
-    setCountTodos(Math.ceil(response.data.countCards.count / 5))
-    setErr(response.message)
+
   }
 
   async function deleteItem(idDeleteItem) {
-    const response = await deleteTask(idDeleteItem)
-    if (response.status === 204) {
-      const responseGet = await getTask(querystring.stringify({
-        page: statePag,
-        done: filterDone,
-        order: filterDate
-      }))
+    try {
+      const response = await deleteTask(idDeleteItem)
+      if (response.status === 204) {
+        const responseGet = await getTask(querystring.stringify({
+          page: statePag,
+          done: filterDone,
+          order: filterDate
+        }))
 
-      setTodos(responseGet.data.rows)
-      setCountTodos(Math.ceil(responseGet.data.count / 5))
+        setTodos(responseGet.data.rows)
+        setCountTodos(Math.ceil(responseGet.data.count / 5))
+      }
+
+    } catch (e) {
+      console.log(e)
+      setErr(e.message)
     }
-    setErr(response.message)
+
   }
 
   async function filters(statusItem) {
@@ -98,35 +114,43 @@ function App() {
   }
 
   async function changeTitle(value, idItem) {
-    const check = todos.find(item => item.uuid === idItem)
-    const response = await checkTask(idItem, { name: value, done: check.done })
+    try {
+      const check = todos.find(item => item.uuid === idItem)
+      const response = await checkTask(idItem, { name: value, done: check.done })
 
-    if (response.status === 200) {
-      todos.map(item => {
-        if (item.uuid === idItem) {
-          item.name = value
-        }
-        return item
-      })
+      if (response.status === 200) {
+        todos.map(item => {
+          if (item.uuid === idItem) {
+            item.name = value
+          }
+          return item
+        })
+      }
+    } catch (e) {
+      setErr(e.message)
     }
-    setErr(response.message)
+
   }
 
   async function changeCheckedTodosItem(idItem) {
-    const check = todos.find(item => item.uuid === idItem)
-    const response = await checkTask(idItem, { name: check.name, done: !check.done })
+    try {
+      const check = todos.find(item => item.uuid === idItem)
+      const response = await checkTask(idItem, { name: check.name, done: !check.done })
 
-    if (response.status === 200) {
-      setTodos(
-        todos.filter(item => {
-          if (item.uuid === idItem) {
-            item.done = !item.done
+      if (response.status === 200) {
+        setTodos(
+          todos.filter(item => {
+            if (item.uuid === idItem) {
+              item.done = !item.done
+            }
+            return item
           }
-          return item
-        }
-        ))
+          ))
+      }
+    } catch (e) {
+      setErr(e.message)
     }
-    setErr(response.message)
+
   }
 
   const handlerPagin = async (e, statePagNow) => {
@@ -140,6 +164,11 @@ function App() {
     }))
     setTodos(response.data.rows)
   }
+
+
+  // export const newError = err => {
+  //   setErr(err)
+  // }
 
   return (
     <Router>
