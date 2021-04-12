@@ -8,6 +8,8 @@ import {
   Route
 } from "react-router-dom";
 
+import jwt_decode from "jwt-decode"
+
 import { makeStyles } from '@material-ui/core/styles'
 
 import { Redirect } from 'react-router'
@@ -198,6 +200,7 @@ function App() {
           {
             localStorage.getItem('token') ? <div className="container">
               <Container fixed className={style.containerForBtn}>
+                <h3>Hello, {localStorage.getItem('login')}</h3>
                 <Button
                   variant="contained"
                   color="primary"
@@ -243,14 +246,16 @@ const useStyles = makeStyles(() => ({
     width: '90px',
     height: '30px',
     fontSize: '10px',
-    marginTop: '20px'
+    marginTop: '20px',
+    marginLeft:'20px'
   },
   containerForBtn: {
     display: 'flex',
     width: '100%',
     height: '50px',
     justifyContent: 'flex-end',
-    // flexDirection:'row'
+    alignItems:'space-between'
+
   }
 }));
 
