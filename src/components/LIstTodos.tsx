@@ -1,8 +1,16 @@
 import React from 'react'
 import Item from './Item'
+import { Todo } from '../App'
+
+export interface IListTodos {
+    todos: Todo[],
+    deleteItem(uuid: string): void,
+    changeCheckedTodosItem(uuid: string): void,
+    changeTitle(stateTitle: string, uuid: string): void
+}
 
 
-function ListTodos(props) {
+const ListTodos: React.FunctionComponent<IListTodos> = (props) => {
     const {
         todos,
         deleteItem,
@@ -12,7 +20,7 @@ function ListTodos(props) {
 
 
     const filters = () => {
-      
+
         return todos.map(todo => (<Item
             key={todo.uuid}
             todo={todo}

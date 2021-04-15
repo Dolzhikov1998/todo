@@ -11,20 +11,20 @@ const instanceUser = axios.create(
     }
 )
 
-export const sendFormInfoUser = async (record) => {
+export const sendFormInfoUser = async (record: any) => {
     const response = await instanceUser.post(`user/` + record.typeRequest, record)
     return response
 }
 
 
-instanceUser.interceptors.response.use(
-    response => {
-        if (response.status !== 200 && response.status !== 204) {
-            return alert(`Error: ${response.status}`)
-        }
-        return response
-    },
-    err => {
-        return err
-    }
-)
+// instanceUser.interceptors.response.use(
+//     response => {
+//         if (response.status !== 200 && response.status !== 204) {
+//             return alert(`Error: ${response.status}`)
+//         }
+//         return response
+//     },
+//     err => {
+//         return err
+//     }
+// )

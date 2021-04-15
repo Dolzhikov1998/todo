@@ -12,9 +12,9 @@ import {
 } from "react-router-dom";
 import { Redirect } from 'react-router'
 
-import jwt_decode from "jwt-decode"
+// import jwt_decode from "jwt-decode"
 
-import Header from './components/Header'
+import Header, { IHeader, INewItem } from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
 import MyPaginations from './components/Paginations'
@@ -26,22 +26,20 @@ import { AxiosResponse } from 'axios';
 
 const querystring = require('querystring');
 
-
+export interface Todo {
+  name: string,
+  done: boolean,
+  createdAt: string, //???
+  upfatedAt: string  //???
+  uuidUser: string  // ???
+  uuid: string //???
+}
 
 function App() {
 
   const style = useStyles()
 
-  interface Todo {
-    name?: string,
-    done?: boolean,
-    createdAt?: string, //???
-    upfatedAt?: string  //???
-    uuidUser?: string  // ???
-    uuid?: string //???
-  }
-
-  const [todos, setTodos] = useState<[Todo]>([])
+  const [todos, setTodos] = useState<Todo[]>([])
   const [statusTodo, setStatusTodo] = useState<string>('all')
   const [stateDate, setStateDate] = useState<string>('false')
   const [statePag, setStatePag] = useState<number>(0)
@@ -71,7 +69,7 @@ function App() {
     func()
   }, [])
 
-  async function addNewItem(newItem) {
+  async function addNewItem(newItem: INewItem) {
     try {
       const response: AxiosResponse<any> | undefined = await addTask({ name: newItem.name })
       if (response?.status === 200) {
@@ -86,7 +84,9 @@ function App() {
 
   }
 
-  async function deleteItem(idDeleteItem: number) {
+
+
+  async function deleteItem(idDeleteItem: string) {
     try {
       const response = await deleteTask(idDeleteItem)
       if (response?.status === 204) {
@@ -134,10 +134,10 @@ function App() {
     setCountTodos(Math.ceil(response?.data.count / 5))
   }
 
-  async function changeTitle(value: string, idItem: number) {
+  async function changeTitle(value: string, idItem: string) {
     try {
-      const check = todos.find(item => item.uuid === idItem)
-      const response = await checkTask(idItem, { name: value, done: check.done })
+      const check: Todo | undefined = todos.find((item: Todo) => item.uuid === idItem)
+      const response = await checkTask(idItem, { name: value, done: check?.done })
 
       if (response?.status === 200) {
         todos.map(item => {
@@ -153,12 +153,12 @@ function App() {
 
   }
 
-  async function changeCheckedTodosItem(idItem) {
+  async function changeCheckedTodosItem(idItem: string) {
     try {
-      const check = todos.find(item => item.uuid === idItem)
-      const response = await checkTask(idItem, { name: check.name, done: !check.done })
+      const check: Todo | undefined = todos.find(item => item.uuid === idItem)
+      const response = await checkTask(idItem, { name: check?.name, done: !check?.done })
 
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setTodos(
           todos.filter(item => {
             if (item.uuid === idItem) {
@@ -231,14 +231,15 @@ function App() {
                     todos={todos}
                     deleteItem={deleteItem}
                     changeCheckedTodosItem={changeCheckedTodosItem}
-                    statusTodos={statusTodo}
-                    stateDate={stateDate}
+                    // statusTodos={statusTodo}
+                    // stateDate={stateDate}
                     changeTitle={changeTitle}
-                    statePag={statePag} />
+                    // statePag={statePag}
+                     />
                 }
               </form>
               <MyPaginations
-                todos={todos}
+                // todos={todos}
                 countTodos={countTodos}
                 handlerPagin={handlerPagin} />
               <AlertErr err={err} />
@@ -271,3 +272,4 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default App;
+

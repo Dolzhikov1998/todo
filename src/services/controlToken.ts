@@ -1,14 +1,17 @@
 import jwt_decode from "jwt-decode"
 
 
-
+export interface MyToken {
+    login: string,
+    exp: number
+}
 export const controlToken = () => {
     try {
         if (localStorage.getItem('token') !== null) {
-            const token = localStorage.getItem('token')
+            const token: any = localStorage.getItem('token')
 
-            const decodeToken = jwt_decode(token)
-            
+            const decodeToken: MyToken = jwt_decode(token)
+
             localStorage.setItem('login', decodeToken.login)
 
             const realTime = new Date().getTime() / 1000

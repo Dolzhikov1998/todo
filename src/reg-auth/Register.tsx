@@ -72,7 +72,7 @@ function Register() {
                         onClick={() => sendForm()}>
                         Sign Up
                     </Button>
-                    <Link underlineHover href='http://localhost:3000/todo/auth'>Sign In</Link>
+                    <Link href='http://localhost:3000/todo/auth'>Sign In</Link>
                 </Box>
             </FormGroup>
         </Container>

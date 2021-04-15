@@ -14,7 +14,7 @@ const instance = axios.create(
     }
 )
 
-export const addTask = async (record) => {
+export const addTask = async (record: any) => {
     if (controlToken()) {
         const response = await instance.post(`card`, record)
         return response
@@ -22,7 +22,7 @@ export const addTask = async (record) => {
     console.log('redirect')
 }
 
-export const getTask = async (params) => {
+export const getTask = async (params: any) => {
     if (controlToken()) {
         const response = await instance.get(`card?${params}`)
         return response
@@ -30,7 +30,7 @@ export const getTask = async (params) => {
     console.log('redirect')
 }
 
-export const deleteTask = async (idTask) => {
+export const deleteTask = async (idTask: string) => {
     if (controlToken()) {
         const response = await instance.delete(`card/${idTask}`)
         return response
@@ -38,7 +38,7 @@ export const deleteTask = async (idTask) => {
     console.log('redirect')
 }
 
-export const checkTask = async (idTask, record) => {
+export const checkTask = async (idTask: string, record: any) => {
     if (controlToken()) {
         const response = await instance.patch(`card/${idTask}`, record)
         return response

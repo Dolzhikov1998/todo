@@ -3,12 +3,13 @@ import React from 'react'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
+export interface IAlert {
+    err: string
+}
 
-
-export default function AlertErr({ err }) {
+const AlertErr: React.FunctionComponent<IAlert> = ({ err }) => {
     // console.log(err)
     const [open, setOpen] = React.useState(false);
-
 
     // const handleClose = () => {
     //     setOpen(false);
@@ -31,3 +32,5 @@ export default function AlertErr({ err }) {
     )
 
 }
+
+export default AlertErr

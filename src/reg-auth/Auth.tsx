@@ -57,7 +57,7 @@ function Auth() {
                         onClick={() => sendForm()}>
                         Sign In
                     </Button>
-                    <Link underlineHover href='http://localhost:3000/todo/reg'>Sign Up</Link>
+                    <Link  href='http://localhost:3000/todo/reg'>Sign Up</Link>
                 </Box>
 
 
