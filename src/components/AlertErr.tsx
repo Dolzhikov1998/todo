@@ -7,10 +7,9 @@ export interface IAlert {
     err: string
 }
 
-const AlertErr: React.FunctionComponent<IAlert> = ({ err }) => {
+const AlertErr  = ({ err }: IAlert) => {
     // console.log(err)
     const [open, setOpen] = React.useState(false);
-
     // const handleClose = () => {
     //     setOpen(false);
     //   };

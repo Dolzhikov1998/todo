@@ -21,7 +21,7 @@ export interface IItem {
     changeTitle(stateTitle: string, uuid: string): void
 }
 
-const Item: React.FunctionComponent<IItem> = (props) => {
+const Item = (props:IItem) => {
     const { todo,
         deleteItem,
         changeCheckedTodos,

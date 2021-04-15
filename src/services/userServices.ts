@@ -11,8 +11,17 @@ const instanceUser = axios.create(
     }
 )
 
-export const sendFormInfoUser = async (record: any) => {
+export interface User {
+    login: string,
+    password: string,
+    typeRequest: string,
+    email?: string
+}
+
+export const sendFormInfoUser = async (record: User) => {
+    console.log('111');
     const response = await instanceUser.post(`user/` + record.typeRequest, record)
+    console.log(response)
     return response
 }
 

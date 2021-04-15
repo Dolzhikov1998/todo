@@ -8,7 +8,7 @@ import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 
 import { sendFormInfoUser } from '../services/userServices'
-import { Redirect } from 'react-router';
+import { useHistory } from "react-router-dom";
 
 function Register() {
     const style = useStyles()
@@ -17,6 +17,7 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    let history = useHistory()
 
     const sendForm = async () => {
         const response = await sendFormInfoUser({
@@ -25,14 +26,13 @@ function Register() {
             email: email,
             typeRequest: 'reg'
         })
-        console.log(response.data)
 
-        localStorage.setItem('token', response.data.token)
-
-        if (localStorage.getItem('token')) {
-            <Redirect to='/todo/app' />
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('login', login)
+            history.push("/todo/app")
+            history.go(0)
         }
-
     }
 
     return (

@@ -10,12 +10,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface IPagination {
+export interface PaginationProps {
   handlerPagin(e:any, statePagNow: number): void,
   countTodos: number
 }
 
-const MyPaginations: React.FunctionComponent<IPagination> = (props) => {
+const MyPaginations: React.FunctionComponent<PaginationProps> = (props) => {
   const {
     handlerPagin,
     countTodos

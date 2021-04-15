@@ -6,8 +6,10 @@ import FormGroup from '@material-ui/core/FormGroup'
 import { makeStyles } from '@material-ui/core/styles'
 import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
+import { useHistory } from "react-router-dom";
 
 import { sendFormInfoUser } from '../services/userServices'
+
 
 function Auth() {
     const style = useStyles()
@@ -15,17 +17,22 @@ function Auth() {
     const [loginAuth, setLoginAuth] = useState('')
     const [passwordAuth, setPasswordAuth] = useState('')
 
+    let history = useHistory()
+
     const sendForm = async () => {
+
         const response = await sendFormInfoUser({
             login: loginAuth,
             password: passwordAuth,
-            typeRequest: 'auth'
+            typeRequest: 'auth',
         })
-
-        if(response.data.token){
+        if (response.data.token) {
             localStorage.setItem('token', response.data.token)
+            localStorage.setItem('login', loginAuth)
+            history.push("/todo/app")
+            history.go(0)
+            // console.log(localStorage.getItem('token'))
         }
-
     }
 
     return (
@@ -57,7 +64,7 @@ function Auth() {
                         onClick={() => sendForm()}>
                         Sign In
                     </Button>
-                    <Link  href='http://localhost:3000/todo/reg'>Sign Up</Link>
+                    <Link href='http://localhost:3000/todo/reg'>Sign Up</Link>
                 </Box>
 
 

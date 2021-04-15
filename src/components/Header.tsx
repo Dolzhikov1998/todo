@@ -10,7 +10,8 @@ export interface IHeader {
     addItem(newItem: INewItem): void
 }
 
-const Header: React.FunctionComponent<IHeader> = ({ addItem }) => {
+const Header = (props: IHeader) => {
+    const { addItem } = props
     const [stateInp, setStateInp] = useState<string>('')
     const [counterForID, setcounterForID] = useState<number>(0)
 

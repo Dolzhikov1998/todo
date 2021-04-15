@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react'
-
 import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
-
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import { Redirect } from 'react-router'
-
-// import jwt_decode from "jwt-decode"
-
-import Header, { IHeader, INewItem } from './components/Header'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Header, { INewItem } from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
 import MyPaginations from './components/Paginations'
 import AlertErr from './components/AlertErr'
 import Register from './reg-auth/Register'
 import Auth from './reg-auth/Auth'
-
+import { useHistory } from "react-router-dom";
 import { AxiosResponse } from 'axios';
 
 const querystring = require('querystring');
@@ -29,26 +19,24 @@ const querystring = require('querystring');
 export interface Todo {
   name: string,
   done: boolean,
-  createdAt: string, //???
-  upfatedAt: string  //???
-  uuidUser: string  // ???
-  uuid: string //???
+  createdAt: string,
+  upfatedAt: string,
+  uuidUser: string,
+  uuid: string
 }
 
 function App() {
 
+  let history = useHistory()
+
   const style = useStyles()
 
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [statusTodo, setStatusTodo] = useState<string>('all')
-  const [stateDate, setStateDate] = useState<string>('false')
-  const [statePag, setStatePag] = useState<number>(0)
   const [err, setErr] = useState<string>('')
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [statePag, setStatePag] = useState<number>(0)
   const [countTodos, setCountTodos] = useState<number>(0)
   const [filterDone, setFilterDone] = useState<string>('')
   const [filterDate, setFilterDate] = useState<string>('asc')
-
-  // const [redirect, setRedirect] = useState(false)
 
   useEffect(() => {
     async function func() {
@@ -81,10 +69,7 @@ function App() {
       console.log(e)
       setErr(e.message)
     }
-
   }
-
-
 
   async function deleteItem(idDeleteItem: string) {
     try {
@@ -95,16 +80,13 @@ function App() {
           done: filterDone,
           order: filterDate
         }))
-
         setTodos(responseGet?.data.rows)
         setCountTodos(Math.ceil(responseGet?.data.count / 5))
       }
-
     } catch (e) {
       console.log(e)
       setErr(e.message)
     }
-
   }
 
   async function filters(statusItem: string) {
@@ -115,14 +97,10 @@ function App() {
       order: filterDate
     }))
     setTodos(response?.data.rows)
-    setStatusTodo(
-      statusItem
-    )
     setCountTodos(Math.ceil(response?.data.count / 5))
   }
 
   async function filtersForDate(valueDate: string) {
-
     setFilterDate(valueDate)
     const response = await getTask(querystring.stringify({
       page: statePag,
@@ -130,7 +108,6 @@ function App() {
       done: filterDone
     }))
     setTodos(response?.data.rows)
-    setStateDate(valueDate)
     setCountTodos(Math.ceil(response?.data.count / 5))
   }
 
@@ -141,16 +118,13 @@ function App() {
 
       if (response?.status === 200) {
         todos.map(item => {
-          if (item.uuid === idItem) {
-            item.name = value
-          }
+          if (item.uuid === idItem) { item.name = value }
           return item
         })
       }
     } catch (e) {
       setErr(e.message)
     }
-
   }
 
   async function changeCheckedTodosItem(idItem: string) {
@@ -161,17 +135,13 @@ function App() {
       if (response?.status === 200) {
         setTodos(
           todos.filter(item => {
-            if (item.uuid === idItem) {
-              item.done = !item.done
-            }
+            if (item.uuid === idItem) { item.done = !item.done }
             return item
-          }
-          ))
+          }))
       }
     } catch (e) {
       setErr(e.message)
     }
-
   }
 
   const handlerPagin = async (e: React.ChangeEvent, statePagNow: number) => {
@@ -186,36 +156,29 @@ function App() {
     setTodos(response?.data.rows)
   }
 
-
-  // export const newError = err => {
-  //   setErr(err)
-  // }
-
   return (
     <Router >
       <Switch>
-        <Route path='/todo/reg'>
-          {
-            localStorage.getItem('token') ? <Redirect to='/todo/app' /> : <Register />
-          }
-
+        <Route path='/todo/reg' >
+          <Register />
         </Route>
 
         <Route path='/todo/auth'>
-          {localStorage.getItem('token') ? <Redirect to='/todo/app' /> : <Auth />}
-
+          <Auth />
         </Route>
 
         <Route path='/todo/app'>
-
           {
-            localStorage.getItem('token') ? <div className="container">
+            <div className="container">
               <Container fixed className={style.containerForBtn}>
                 <h3>Hello, {localStorage.getItem('login')}</h3>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => localStorage.removeItem('token')}
+                  onClick={() => {
+                    localStorage.removeItem('token')
+                    history.go(-1)
+                  }}
                   className={style.buttonLogOut}>
                   Log Out
                 </Button>
@@ -231,21 +194,16 @@ function App() {
                     todos={todos}
                     deleteItem={deleteItem}
                     changeCheckedTodosItem={changeCheckedTodosItem}
-                    // statusTodos={statusTodo}
-                    // stateDate={stateDate}
                     changeTitle={changeTitle}
-                    // statePag={statePag}
-                     />
+                  />
                 }
               </form>
               <MyPaginations
-                // todos={todos}
                 countTodos={countTodos}
                 handlerPagin={handlerPagin} />
               <AlertErr err={err} />
-            </div> : <Auth />
+            </div>
           }
-
         </Route>
       </Switch>
     </Router>

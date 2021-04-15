@@ -9,8 +9,7 @@ export interface IListTodos {
     changeTitle(stateTitle: string, uuid: string): void
 }
 
-
-const ListTodos: React.FunctionComponent<IListTodos> = (props) => {
+const ListTodos = (props: IListTodos) => {
     const {
         todos,
         deleteItem,
@@ -18,9 +17,7 @@ const ListTodos: React.FunctionComponent<IListTodos> = (props) => {
         changeTitle
     } = props
 
-
     const filters = () => {
-
         return todos.map(todo => (<Item
             key={todo.uuid}
             todo={todo}
@@ -35,7 +32,6 @@ const ListTodos: React.FunctionComponent<IListTodos> = (props) => {
             {filters()}
         </div>
     )
-
 }
 
 export default ListTodos

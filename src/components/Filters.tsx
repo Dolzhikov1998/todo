@@ -10,7 +10,7 @@ export interface IFilter {
 }
 
 
-const Filters: React.FunctionComponent<IFilter> = (props) => {
+const Filters = (props: IFilter) => {
     const { filters,
         filtersForDate } = props
     return (

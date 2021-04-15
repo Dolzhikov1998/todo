@@ -14,7 +14,7 @@ const instance = axios.create(
     }
 )
 
-export const addTask = async (record: any) => {
+export const addTask = async (record: { name: string }) => {
     if (controlToken()) {
         const response = await instance.post(`card`, record)
         return response
@@ -22,7 +22,7 @@ export const addTask = async (record: any) => {
     console.log('redirect')
 }
 
-export const getTask = async (params: any) => {
+export const getTask = async (params: { page: number, order: string }) => {
     if (controlToken()) {
         const response = await instance.get(`card?${params}`)
         return response
