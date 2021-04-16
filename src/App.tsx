@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
+import { useDispatch } from 'react-redux';
+import AppDispatch from './redux/store'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
-import { makeStyles } from '@material-ui/core/styles'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header, { INewItem } from './components/Header'
 import Filters from './components/Filters'
 import ListTodos from './components/LIstTodos'
@@ -13,6 +12,9 @@ import Register from './reg-auth/Register'
 import Auth from './reg-auth/Auth'
 import { useHistory } from "react-router-dom";
 import { AxiosResponse } from 'axios';
+import { makeStyles } from '@material-ui/core/styles'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
 
 const querystring = require('querystring');
 
@@ -28,7 +30,6 @@ export interface Todo {
 function App() {
 
   let history = useHistory()
-
   const style = useStyles()
 
   const [err, setErr] = useState<string>('')
@@ -38,6 +39,8 @@ function App() {
   const [filterDone, setFilterDone] = useState<string>('')
   const [filterDate, setFilterDate] = useState<string>('asc')
 
+  const dispath = useDispatch()
+
   useEffect(() => {
     async function func() {
       try {
@@ -45,10 +48,15 @@ function App() {
           page: statePag,
           order: 'asc'
         }))
+
         if (response?.status === 200) {
           setTodos(response.data.rows)
+
+          // dispath(addTask(response.data.rows))
+
           setCountTodos(Math.ceil(response.data.count / 5))
         }
+
       } catch (e) {
         console.log(e)
         setErr(e.message)
@@ -81,6 +89,7 @@ function App() {
           order: filterDate
         }))
         setTodos(responseGet?.data.rows)
+
         setCountTodos(Math.ceil(responseGet?.data.count / 5))
       }
     } catch (e) {

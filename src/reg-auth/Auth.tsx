@@ -61,7 +61,7 @@ function Auth() {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => sendForm()}>
+                        onClick={() =>  sendForm()}>
                         Sign In
                     </Button>
                     <Link href='http://localhost:3000/todo/reg'>Sign Up</Link>
