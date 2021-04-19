@@ -16,7 +16,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
 import { AppState } from './redux/store'
-import { addingTasks, addOneTask, deleteOneTask, filterByDone, filterByDate, changeTitleInStore, changeChecked, AllowNeedPage } from './redux/actions'
+import { addingTasks, addOneTask, deleteOneTask, filterByDone, filterByDate, changeTitleInStore, changeChecked, AllowNeedPage } from './redux/TaskActions'
 
 const querystring = require('querystring');
 
