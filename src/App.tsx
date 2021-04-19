@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
-import AppDispatch from './redux/store'
+import { useSelector } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Header, { INewItem } from './components/Header'
@@ -15,6 +15,8 @@ import { AxiosResponse } from 'axios';
 import { makeStyles } from '@material-ui/core/styles'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
+import { AppState } from './redux/store'
+import { addingTasks, addOneTask, deleteOneTask, filterByDone, filterByDate, changeTitleInStore, changeChecked, AllowNeedPage } from './redux/actions'
 
 const querystring = require('querystring');
 
@@ -32,12 +34,12 @@ function App() {
   let history = useHistory()
   const style = useStyles()
 
+  const Objtodos = useSelector<AppState, AppState['TaskReducers']>(state => state.TaskReducers)
+
   const [err, setErr] = useState<string>('')
-  const [todos, setTodos] = useState<Todo[]>([])
   const [statePag, setStatePag] = useState<number>(0)
   const [countTodos, setCountTodos] = useState<number>(0)
   const [filterDone, setFilterDone] = useState<string>('')
-  const [filterDate, setFilterDate] = useState<string>('asc')
 
   const dispath = useDispatch()
 
@@ -50,9 +52,7 @@ function App() {
         }))
 
         if (response?.status === 200) {
-          setTodos(response.data.rows)
-
-          // dispath(addTask(response.data.rows))
+          dispath(addingTasks(response.data.rows))
 
           setCountTodos(Math.ceil(response.data.count / 5))
         }
@@ -68,10 +68,8 @@ function App() {
   async function addNewItem(newItem: INewItem) {
     try {
       const response: AxiosResponse<any> | undefined = await addTask({ name: newItem.name })
-      if (response?.status === 200) {
-        if (todos.length < 5)
-          setTodos([...todos, { ...response.data.card }])
-      }
+      if (response?.status === 200 && Objtodos.todos.length < 5) dispath(addOneTask(response.data.card)) 
+
       setCountTodos(Math.ceil(response?.data.countCards.count / 5))
     } catch (e) {
       console.log(e)
@@ -83,14 +81,16 @@ function App() {
     try {
       const response = await deleteTask(idDeleteItem)
       if (response?.status === 204) {
-        const responseGet = await getTask(querystring.stringify({
+
+        const responseBeforeDelete = await getTask(querystring.stringify({
           page: statePag,
           done: filterDone,
-          order: filterDate
+          order: 'asc'
         }))
-        setTodos(responseGet?.data.rows)
-
-        setCountTodos(Math.ceil(responseGet?.data.count / 5))
+        if (responseBeforeDelete) {
+          dispath(deleteOneTask(responseBeforeDelete.data.rows))
+          setCountTodos(Math.ceil(responseBeforeDelete?.data.count / 5))
+        }
       }
     } catch (e) {
       console.log(e)
@@ -103,51 +103,48 @@ function App() {
     const response = await getTask(querystring.stringify({
       page: statePag,
       done: statusItem,
-      order: filterDate
+      order: 'asc'
     }))
-    setTodos(response?.data.rows)
-    setCountTodos(Math.ceil(response?.data.count / 5))
+
+    if (response) {
+      dispath(filterByDone(response.data.rows))
+      setCountTodos(Math.ceil(response?.data.count / 5))
+    }
   }
 
   async function filtersForDate(valueDate: string) {
-    setFilterDate(valueDate)
     const response = await getTask(querystring.stringify({
       page: statePag,
       order: valueDate,
       done: filterDone
     }))
-    setTodos(response?.data.rows)
-    setCountTodos(Math.ceil(response?.data.count / 5))
+
+    if (response) {
+      dispath(filterByDate(response.data.rows))
+      setCountTodos(Math.ceil(response.data.count / 5))
+    }
   }
 
   async function changeTitle(value: string, idItem: string) {
     try {
-      const check: Todo | undefined = todos.find((item: Todo) => item.uuid === idItem)
+      const check: Todo | undefined = Objtodos.todos.find((item: Todo) => item.uuid === idItem)
       const response = await checkTask(idItem, { name: value, done: check?.done })
 
-      if (response?.status === 200) {
-        todos.map(item => {
-          if (item.uuid === idItem) { item.name = value }
-          return item
-        })
-      }
+      if (response?.status === 200) dispath(changeTitleInStore({ idItem, value }))
+
     } catch (e) {
       setErr(e.message)
     }
   }
 
+
   async function changeCheckedTodosItem(idItem: string) {
     try {
-      const check: Todo | undefined = todos.find(item => item.uuid === idItem)
+      const check: Todo | undefined = Objtodos.todos.find(item => item.uuid === idItem)
       const response = await checkTask(idItem, { name: check?.name, done: !check?.done })
 
-      if (response?.status === 200) {
-        setTodos(
-          todos.filter(item => {
-            if (item.uuid === idItem) { item.done = !item.done }
-            return item
-          }))
-      }
+      if (response?.status === 200) dispath(changeChecked(idItem))
+
     } catch (e) {
       setErr(e.message)
     }
@@ -159,10 +156,11 @@ function App() {
 
     const response = await getTask(querystring.stringify({
       page: statePagNow - 1,
-      order: filterDate,
+      order: 'asc',
       done: filterDone
     }))
-    setTodos(response?.data.rows)
+
+    if (response) dispath(AllowNeedPage(response.data.rows))
   }
 
   return (
@@ -200,7 +198,6 @@ function App() {
               <form className='content'>
                 {
                   <ListTodos
-                    todos={todos}
                     deleteItem={deleteItem}
                     changeCheckedTodosItem={changeCheckedTodosItem}
                     changeTitle={changeTitle}

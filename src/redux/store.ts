@@ -1,16 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import todos from './TaskReducers';
-
-
-
-
-
+import TaskReducers from './TaskReducers';
 
 const store = configureStore({
   reducer: {
-    todos
+    TaskReducers
   }
 });
+
+export type AppState = ReturnType<typeof store.getState>;
 
 export default store;
 

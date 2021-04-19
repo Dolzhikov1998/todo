@@ -1,9 +1,10 @@
 import React from 'react'
 import Item from './Item'
-import { Todo } from '../App'
+import { useSelector } from 'react-redux'
+import { AppState } from '../redux/store'
 
 export interface IListTodos {
-    todos: Todo[],
+    // todos: Todo[],
     deleteItem(uuid: string): void,
     changeCheckedTodosItem(uuid: string): void,
     changeTitle(stateTitle: string, uuid: string): void
@@ -11,14 +12,16 @@ export interface IListTodos {
 
 const ListTodos = (props: IListTodos) => {
     const {
-        todos,
         deleteItem,
         changeCheckedTodosItem,
         changeTitle
     } = props
 
+    const Objtodos = useSelector<AppState, AppState['TaskReducers']>(state => state.TaskReducers)
+    console.log(Objtodos.todos)
+
     const filters = () => {
-        return todos.map(todo => (<Item
+        return Objtodos.todos.map(todo => (<Item
             key={todo.uuid}
             todo={todo}
             deleteItem={deleteItem}
