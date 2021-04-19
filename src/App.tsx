@@ -17,6 +17,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { addTask, deleteTask, getTask, checkTask } from './services/taskServices'
 import { AppState } from './redux/store'
 import { addingTasks, addOneTask, deleteOneTask, filterByDone, filterByDate, changeTitleInStore, changeChecked, AllowNeedPage } from './redux/TaskActions'
+import { addNewTask } from './redux/TaskRequestAPI'
 
 const querystring = require('querystring');
 
@@ -67,10 +68,15 @@ function App() {
 
   async function addNewItem(newItem: INewItem) {
     try {
-      const response: AxiosResponse<any> | undefined = await addTask({ name: newItem.name })
-      if (response?.status === 200 && Objtodos.todos.length < 5) dispath(addOneTask(response.data.card)) 
+      // const response: AxiosResponse<any> | undefined = await addTask({ name: newItem.name })
+      // console.log('=========================================')
+      
+      // const aaa = addNewTask(newItem)
+      // console.log(aaa)
 
-      setCountTodos(Math.ceil(response?.data.countCards.count / 5))
+      // if (response?.status === 200 && Objtodos.todos.length < 5) dispath(addOneTask(response.data.card))
+
+      // setCountTodos(Math.ceil(response?.data.countCards.count / 5))
     } catch (e) {
       console.log(e)
       setErr(e.message)
@@ -97,6 +103,7 @@ function App() {
       setErr(e.message)
     }
   }
+
 
   async function filters(statusItem: string) {
     setFilterDone(statusItem)
@@ -191,7 +198,7 @@ function App() {
                 </Button>
               </Container>
 
-              <Header addItem={addNewItem} />
+              <Header />
               <Filters
                 filters={filters}
                 filtersForDate={filtersForDate} />

@@ -1,5 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+import { AppState } from './store';
 import { addingTasks, addOneTask, deleteOneTask, filterByDone, filterByDate, changeTitleInStore, changeChecked, AllowNeedPage } from './TaskActions'
+import { addNewTask } from './TaskRequestAPI';
 
 
 export interface Todo {
@@ -21,10 +24,10 @@ export const initialState: Todos = {
 
 export default createReducer(initialState, builder => {
     builder
-        .addCase(addOneTask, (state, action) => {
-            state.todos.push(action.payload)
-            return state
-        })
+        // .addCase(addOneTask, (state, action) => {
+        //     state.todos.push(action.payload)
+        //     return state
+        // })
         .addCase(addingTasks, (state, action) => {
             state.todos = action.payload
             return state
@@ -51,6 +54,10 @@ export default createReducer(initialState, builder => {
         .addCase(AllowNeedPage, (state, action) => {
             state.todos = action.payload
             return state
+        })
+        .addCase(addNewTask.fulfilled, (state, action) => {
+            console.log(state.todos);
+            state.todos.push(action.payload.card); // Проверять локальный стейт, если 5 элементов то не пушить
         })
         .addCase(changeTitleInStore, (state, action) => {
             state.todos.map(item => {
