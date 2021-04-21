@@ -129,4 +129,19 @@ export const FirstGetTasks = createAsyncThunk(
     }
 );
 
+export const clearLocalStorage = createAsyncThunk(
+    'tasks/clearStore',
+    async () => {
+        try {
+            localStorage.removeItem('token')
+            localStorage.removeItem('login')
+        } catch (e) {
+            console.log(e)
+        }
+    }
+);
+
+
+
+
 

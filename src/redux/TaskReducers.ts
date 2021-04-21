@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { addingTasks, changeNumberPage, addFillterByDone, addFillterByDate, clearStore } from './TaskActions'
-import { addNewTask, changeCheckedTodosItem, changeTitle, deleteTodo, filtersByDate, filtersByDone, FirstGetTasks, handlerPagination } from './TaskRequestAPI';
+import { addNewTask, changeCheckedTodosItem, changeTitle, clearLocalStorage, deleteTodo, filtersByDate, filtersByDone, FirstGetTasks, handlerPagination } from './TaskRequestAPI';
 
 export interface Todo {
     name: string,
@@ -102,8 +102,8 @@ export default createReducer(initialState, builder => {
         })
         .addCase(FirstGetTasks.pending, (state, action) => {
             // if (action.payload) {
-                state.statusLoading = true
-                return state
+            state.statusLoading = true
+            return state
             // }
         })
         .addCase(addFillterByDone, (state, action) => {
@@ -114,8 +114,9 @@ export default createReducer(initialState, builder => {
             if (action.payload) state.filterDate = action.payload
             return state
         })
-        .addCase(clearStore, (state, action) => {
+        .addCase(clearLocalStorage.fulfilled, (state, action) => {
             state.todos = []
+            state.statusLoading = true
             return state
         })
 

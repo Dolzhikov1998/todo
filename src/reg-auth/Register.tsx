@@ -38,7 +38,7 @@ function Register() {
     return (
         <Container fixed className={style.container}>
 
-            <FormGroup className={style.form}>
+            <FormGroup className={style.form} >
                 <h1>SIGN UP</h1>
                 <TextField
                     id="filled-login-input"
@@ -70,7 +70,9 @@ function Register() {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => sendForm()
+                        onClick={() =>{
+                            sendForm()
+                        } 
 
                         }>
                         Sign Up

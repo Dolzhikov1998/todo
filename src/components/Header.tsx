@@ -30,6 +30,7 @@ const Header = () => {
                     if (event.key === 'Enter') {
                         if (stateInp === '') alert('Ничего нет!')
                         else {
+                            event.preventDefault()
                             console.log('1111')
                             dispatch(addNewTask({name: stateInp, done: false}))
                             setcounterForID(counterForID + 1)

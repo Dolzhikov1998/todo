@@ -14,8 +14,8 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AppState } from './redux/store'
-import { changeNumberPage, clearStore } from './redux/TaskActions'
-import { FirstGetTasks, handlerPagination } from './redux/TaskRequestAPI'
+import { changeNumberPage } from './redux/TaskActions'
+import { clearLocalStorage, FirstGetTasks, handlerPagination } from './redux/TaskRequestAPI'
 import CircularProgress from './components/Loader'
 
 
@@ -85,15 +85,13 @@ function App() {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        dispath(clearStore)
-                        localStorage.removeItem('token')
+                        dispath(clearLocalStorage())
                         history.go(-1)
                       }}
                       className={style.buttonLogOut}>
                       Log Out
                 </Button>
                   </Container>
-
                   <Header />
                   <Filters />
                   <form className='content'>
@@ -105,7 +103,6 @@ function App() {
                   <AlertErr err={err} />
                 </>
             }
-
             </div>
           }
         </Route>

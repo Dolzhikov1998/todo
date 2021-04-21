@@ -7,9 +7,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 import { useHistory } from "react-router-dom";
-
 import { sendFormInfoUser } from '../services/userServices'
-
 
 function Auth() {
     const style = useStyles()
@@ -31,7 +29,6 @@ function Auth() {
             localStorage.setItem('login', loginAuth)
             history.push("/todo/app")
             history.go(0)
-            // console.log(localStorage.getItem('token'))
         }
     }
 
@@ -61,7 +58,10 @@ function Auth() {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() =>  sendForm()}>
+                        onClick={() => {
+                            sendForm()
+                        }
+                        }>
                         Sign In
                     </Button>
                     <Link href='http://localhost:3000/todo/reg'>Sign Up</Link>
