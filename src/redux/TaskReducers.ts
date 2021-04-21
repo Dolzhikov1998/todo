@@ -1,9 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
-import { AppState } from './store';
-import { addingTasks, addOneTask, deleteOneTask, filterByDone, filterByDate, changeTitleInStore, changeChecked, AllowNeedPage } from './TaskActions'
-import { addNewTask } from './TaskRequestAPI';
-
+import { addingTasks, changeNumberPage, addFillterByDone, addFillterByDate } from './TaskActions'
+import { addNewTask, changeCheckedTodosItem, changeTitle, deleteTodo, filtersByDate, filtersByDone, FirstGetTasks, handlerPagination } from './TaskRequestAPI';
 
 export interface Todo {
     name: string,
@@ -14,56 +11,101 @@ export interface Todo {
     uuid: string
 }
 
+
 export interface Todos {
-    todos: Todo[]
+    todos: Todo[],
+    page: number,
+    filterDone: string,
+    counterPages: number,
+    filterDate: string
 }
 
 export const initialState: Todos = {
-    todos: []
+    todos: [],
+    page: 1,
+    filterDone: '',
+    counterPages: 1,
+    filterDate: 'asc'
 }
 
 export default createReducer(initialState, builder => {
     builder
-        // .addCase(addOneTask, (state, action) => {
-        //     state.todos.push(action.payload)
-        //     return state
-        // })
         .addCase(addingTasks, (state, action) => {
             state.todos = action.payload
             return state
         })
-        .addCase(deleteOneTask, (state, action) => {
-            state.todos = action.payload
-            return state
-        })
-        .addCase(filterByDone, (state, action) => {
-            state.todos = action.payload
-            return state
-        })
-        .addCase(filterByDate, (state, action) => {
-            state.todos = action.payload
-            return state
-        })
-        .addCase(changeChecked, (state, action) => {
-            state.todos.filter(item => {
-                if (item.uuid === action.payload) item.done = !item.done
-                return item
-            })
-            return state
-        })
-        .addCase(AllowNeedPage, (state, action) => {
-            state.todos = action.payload
-            return state
-        })
         .addCase(addNewTask.fulfilled, (state, action) => {
-            console.log(state.todos);
-            state.todos.push(action.payload.card); // Проверять локальный стейт, если 5 элементов то не пушить
+            console.log(action.payload)
+            state.counterPages = Math.ceil(action.payload.countCards.count / 5)
+            if (state.todos.length < 5) state.todos.push(action.payload.card);
         })
-        .addCase(changeTitleInStore, (state, action) => {
-            state.todos.map(item => {
-                if (item.uuid === action.payload.idItem) { item.name = action.payload.value }
-                return item
-            })
+        .addCase(deleteTodo.fulfilled, (state, action) => {
+            if (action.payload) {
+                console.log(action.payload)
+                state.counterPages = Math.ceil(action.payload.data.count / 5)
+                state.todos = action.payload.data.rows
+            }
+        })
+        .addCase(filtersByDone.fulfilled, (state, action) => {
+            if (action.payload) {
+                console.log(action.payload)
+                state.counterPages = Math.ceil(action.payload.data.count / 5)
+                state.page = 0
+                state.todos = action.payload.data.rows
+            }
+        })
+        .addCase(filtersByDate.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.counterPages = Math.ceil(action.payload.data.count / 5)
+                state.todos = action.payload.data.rows
+            }
+        })
+        .addCase(changeTitle.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.todos.map(item => {
+                    if (item.uuid === action.payload?.id) { item.name = action.payload.title }
+                    return item
+                })
+                return state
+            }
+        })
+        .addCase(changeCheckedTodosItem.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.todos.map(item => {
+                    if (item.uuid === action.payload?.id) { item.done = action.payload.checkValue }
+                    return item
+                })
+                return state
+            }
+        })
+        .addCase(handlerPagination.fulfilled, (state, action) => {
+            if (action.payload) {
+                state.todos = action.payload.data.rows
+                return state
+            }
+        })
+        .addCase(changeNumberPage, (state, action) => {
+            if (action.payload === 1)
+                state.page = 0
+            state.page = action.payload
             return state
         })
+        .addCase(FirstGetTasks.fulfilled, (state, action) => {
+            if (action.payload) {
+                console.log(action.payload)
+                state.todos = action.payload.rows
+                state.counterPages = Math.ceil(action.payload.count / 5)
+                return state
+            }
+
+        })
+        .addCase(addFillterByDone, (state, action) => {
+            state.filterDone = action.payload
+            return state
+        })
+        .addCase(addFillterByDate, (state, action) => {
+            if (action.payload) state.filterDate = action.payload
+            return state
+        })
+
 })

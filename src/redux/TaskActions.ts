@@ -17,3 +17,17 @@ export const changeTitleInStore = createAction<ChangeTitleTask>('changeTitleInSt
 
 
 
+export const countPages = createAction('countPages')
+export const changeNumberPage = createAction<number>('changeNumberPage')
+
+
+export const addFillterByDone = createAction<string>('addFillterByDone')
+export const addFillterByDate = createAction<string>('addFillterByDate')
+
+
+
+
+
+
+
+
