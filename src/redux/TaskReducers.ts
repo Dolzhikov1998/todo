@@ -17,7 +17,8 @@ export interface Todos {
     page: number,
     filterDone: string,
     counterPages: number,
-    filterDate: string
+    filterDate: string,
+    statusLoading: boolean
 }
 
 export const initialState: Todos = {
@@ -25,7 +26,8 @@ export const initialState: Todos = {
     page: 1,
     filterDone: '',
     counterPages: 1,
-    filterDate: 'asc'
+    filterDate: 'asc',
+    statusLoading: false
 }
 
 export default createReducer(initialState, builder => {
@@ -92,12 +94,17 @@ export default createReducer(initialState, builder => {
         })
         .addCase(FirstGetTasks.fulfilled, (state, action) => {
             if (action.payload) {
-                console.log(action.payload)
+                state.statusLoading = false
                 state.todos = action.payload.rows
                 state.counterPages = Math.ceil(action.payload.count / 5)
                 return state
             }
-
+        })
+        .addCase(FirstGetTasks.pending, (state, action) => {
+            // if (action.payload) {
+                state.statusLoading = true
+                return state
+            // }
         })
         .addCase(addFillterByDone, (state, action) => {
             state.filterDone = action.payload

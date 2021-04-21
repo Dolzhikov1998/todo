@@ -43,7 +43,7 @@ function App() {
   const style = useStyles()
 
   const [err, setError] = useState('')
-  const [loader, setLoader] = useState(true)
+  // const [loader, setLoader] = useState(true)
 
   const Objtodos = useSelector<AppState, AppState['TaskReducers']>(state => state.TaskReducers)
 
@@ -77,7 +77,7 @@ function App() {
         <Route path='/todo/app'>
           {
             <div className={style.container}>{
-              loader ? <CircularProgress /> :
+              Objtodos.statusLoading ? <CircularProgress /> :
                 <>
                   <Container fixed className={style.containerForBtn}>
                     <h3>Hello, {localStorage.getItem('login')}</h3>
