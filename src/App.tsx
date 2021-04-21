@@ -14,8 +14,9 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AppState } from './redux/store'
-import { changeNumberPage } from './redux/TaskActions'
+import { changeNumberPage, clearStore } from './redux/TaskActions'
 import { FirstGetTasks, handlerPagination } from './redux/TaskRequestAPI'
+import CircularProgress from './components/Loader'
 
 
 export interface Todo {
@@ -42,6 +43,7 @@ function App() {
   const style = useStyles()
 
   const [err, setError] = useState('')
+  const [loader, setLoader] = useState(true)
 
   const Objtodos = useSelector<AppState, AppState['TaskReducers']>(state => state.TaskReducers)
 
@@ -54,96 +56,6 @@ function App() {
     func()
   }, [])
 
-  // async function addNewItem(newItem: INewItem) {
-  //   try {
-  //     // const response: AxiosResponse<any> | undefined = await addTask({ name: newItem.name })
-  //     // console.log('=========================================')
-
-  //     // const aaa = addNewTask(newItem)
-  //     // console.log(aaa)
-
-  //     // if (response?.status === 200 && Objtodos.todos.length < 5) dispath(addOneTask(response.data.card))
-
-  //     // setCountTodos(Math.ceil(response?.data.countCards.count / 5))
-  //   } catch (e) {
-  //     console.log(e)
-  //     setErr(e.message)
-  //   }
-  // }
-
-  // async function deleteItem(idDeleteItem: string) {
-  //   try {
-  //     const response = await deleteTask(idDeleteItem)
-  //     if (response?.status === 204) {
-
-  //       const responseBeforeDelete = await getTask(querystring.stringify({
-  //         page: statePag,
-  //         done: filterDone,
-  //         order: 'asc'
-  //       }))
-  //       if (responseBeforeDelete) {
-  //         dispath(deleteOneTask(responseBeforeDelete.data.rows))
-  //         setCountTodos(Math.ceil(responseBeforeDelete?.data.count / 5))
-  //       }
-  //     }
-  //   } catch (e) {
-  //     console.log(e)
-  //     setErr(e.message)
-  //   }
-  // }
-
-
-  // async function filters(statusItem: string) {
-  //   setFilterDone(statusItem)
-  //   const response = await getTask(querystring.stringify({
-  //     page: statePag,
-  //     done: statusItem,
-  //     order: 'asc'
-  //   }))
-
-  //   if (response) {
-  //     dispath(filterByDone(response.data.rows))
-  //     setCountTodos(Math.ceil(response?.data.count / 5))
-  //   }
-  // }
-
-  // async function filtersForDate(valueDate: string) {
-  //   const response = await getTask(querystring.stringify({
-  //     page: statePag,
-  //     order: valueDate,
-  //     done: filterDone
-  //   }))
-
-  //   if (response) {
-  //     dispath(filterByDate(response.data.rows))
-  //     setCountTodos(Math.ceil(response.data.count / 5))
-  //   }
-  // }
-
-  // async function changeTitle(value: string, idItem: string) {
-  //   try {
-  //     const check: Todo | undefined = Objtodos.todos.find((item: Todo) => item.uuid === idItem)
-  //     const response = await checkTask(idItem, { name: value, done: check?.done })
-
-  //     if (response?.status === 200) dispath(changeTitleInStore({ idItem, value }))
-
-  //   } catch (e) {
-  //     setErr(e.message)
-  //   }
-  // }
-
-
-  // async function changeCheckedTodosItem(idItem: string) {
-  //   try {
-  //     const check: Todo | undefined = Objtodos.todos.find(item => item.uuid === idItem)
-  //     const response = await checkTask(idItem, { name: check?.name, done: !check?.done })
-
-  //     if (response?.status === 200) dispath(changeChecked(idItem))
-
-  //   } catch (e) {
-  //     setErr(e.message)
-  //   }
-  // }
 
   const handlerPagin = async (e: React.ChangeEvent, statePagNow: number) => {
     dispath(changeNumberPage(statePagNow))
@@ -164,30 +76,36 @@ function App() {
 
         <Route path='/todo/app'>
           {
-            <div className="container">
-              <Container fixed className={style.containerForBtn}>
-                <h3>Hello, {localStorage.getItem('login')}</h3>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    localStorage.removeItem('token')
-                    history.go(-1)
-                  }}
-                  className={style.buttonLogOut}>
-                  Log Out
+            <div className={style.container}>{
+              loader ? <CircularProgress /> :
+                <>
+                  <Container fixed className={style.containerForBtn}>
+                    <h3>Hello, {localStorage.getItem('login')}</h3>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        dispath(clearStore)
+                        localStorage.removeItem('token')
+                        history.go(-1)
+                      }}
+                      className={style.buttonLogOut}>
+                      Log Out
                 </Button>
-              </Container>
+                  </Container>
 
-              <Header />
-              <Filters />
-              <form className='content'>
-                {
-                  <ListTodos />
-                }
-              </form>
-              <MyPaginations handlerPagin={handlerPagin} />
-              <AlertErr err={err} />
+                  <Header />
+                  <Filters />
+                  <form className='content'>
+                    {
+                      <ListTodos />
+                    }
+                  </form>
+                  <MyPaginations handlerPagin={handlerPagin} />
+                  <AlertErr err={err} />
+                </>
+            }
+
             </div>
           }
         </Route>
@@ -212,6 +130,15 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'flex-end',
     alignItems: 'space-between'
 
+  },
+  container: {
+    width: '1200px',
+    height: '100vh',
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }));
 

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addingTasks, changeNumberPage, addFillterByDone, addFillterByDate } from './TaskActions'
+import { addingTasks, changeNumberPage, addFillterByDone, addFillterByDate, clearStore } from './TaskActions'
 import { addNewTask, changeCheckedTodosItem, changeTitle, deleteTodo, filtersByDate, filtersByDone, FirstGetTasks, handlerPagination } from './TaskRequestAPI';
 
 export interface Todo {
@@ -105,6 +105,10 @@ export default createReducer(initialState, builder => {
         })
         .addCase(addFillterByDate, (state, action) => {
             if (action.payload) state.filterDate = action.payload
+            return state
+        })
+        .addCase(clearStore, (state, action) => {
+            state.todos = []
             return state
         })
 

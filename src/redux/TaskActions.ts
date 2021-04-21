@@ -24,6 +24,8 @@ export const changeNumberPage = createAction<number>('changeNumberPage')
 export const addFillterByDone = createAction<string>('addFillterByDone')
 export const addFillterByDate = createAction<string>('addFillterByDate')
 
+export const clearStore = createAction('clearStore')
+
 
 
 

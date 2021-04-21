@@ -37,6 +37,7 @@ function Register() {
 
     return (
         <Container fixed className={style.container}>
+
             <FormGroup className={style.form}>
                 <h1>SIGN UP</h1>
                 <TextField
@@ -69,12 +70,15 @@ function Register() {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => sendForm()}>
+                        onClick={() => sendForm()
+
+                        }>
                         Sign Up
                     </Button>
                     <Link href='http://localhost:3000/todo/auth'>Sign In</Link>
                 </Box>
             </FormGroup>
+
         </Container>
     )
 }
