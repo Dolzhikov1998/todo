@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addingTasks, changeNumberPage, addFillterByDone, addFillterByDate, clearStore } from './TaskActions'
+import { addingTasks, changeNumberPage, addFillterByDone, addFillterByDate } from './TaskActions'
 import { addNewTask, changeCheckedTodosItem, changeTitle, clearLocalStorage, deleteTodo, filtersByDate, filtersByDone, FirstGetTasks, handlerPagination } from './TaskRequestAPI';
 
 export interface Todo {
