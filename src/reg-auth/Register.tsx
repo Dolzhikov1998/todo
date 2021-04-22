@@ -1,15 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
-import * as Yup from 'yup';
-// import deepEqual from "lodash.isequal"
-
 import { sendFormInfoUser } from '../services/userServices'
 import { useHistory } from "react-router-dom";
-
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import { FormGroup, TextField } from '@material-ui/core';

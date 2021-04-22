@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -8,69 +8,96 @@ import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 import { useHistory } from "react-router-dom";
 import { sendFormInfoUser } from '../services/userServices'
+import * as yup from 'yup';
+import { Formik } from 'formik';
+
+export interface sendFormAuth {
+    Login: string,
+    Password: string,
+}
 
 function Auth() {
     const style = useStyles()
-
-    const [loginAuth, setLoginAuth] = useState('')
-    const [passwordAuth, setPasswordAuth] = useState('')
-
     let history = useHistory()
 
-    const sendForm = async () => {
+    const sendForm = async (values: sendFormAuth) => {
 
         const response = await sendFormInfoUser({
-            login: loginAuth,
-            password: passwordAuth,
+            login: values.Login,
+            password: values.Password,
             typeRequest: 'auth',
         })
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
-            localStorage.setItem('login', loginAuth)
+            localStorage.setItem('login', values.Login)
             history.push("/todo/app")
             history.go(0)
         }
     }
 
+    const validationsShema = yup.object().shape({
+        Login: yup.string().typeError('Must have string').min(6, "Login should have a minimum 6 symbols").required('Login is required filed'),
+        Password: yup.string().typeError('Must have string').min(6, "Password should have a minimum6 symbols").required('Password is required filed'),
+    })
+
     return (
-        <Container fixed className={style.container}>
-            <FormGroup className={style.form}>
-                <h1>SIGN IN</h1>
-                <TextField
-                    id="standard-basic"
-                    label="Login"
-                    className={style.input}
-                    value={loginAuth}
-                    onChange={event => {
-                        setLoginAuth(event.target.value)
-                    }} />
-                <TextField
-                    id="filled-password-input"
-                    label="Password"
-                    type="password"
-                    className={style.input}
-                    value={passwordAuth}
-                    onChange={event => {
-                        setPasswordAuth(event.target.value)
-                    }} />
+        <Formik
+            initialValues={{
+                Login: "",
+                Password: ""
+            }}
+            validateOnBlur
+            onSubmit={(values => { console.log('vvvvvvvvvvvvvvvvvvvvvvv   ' + values) })}
+            validationSchema={validationsShema}
+        >
+            {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty }) => {
+                return (
+                    (
+                        <Container fixed className={style.container}>
+                            <FormGroup className={style.form}>
+                                <h1>SIGN IN</h1>
+                                <TextField
+                                    id="standard-basic"
+                                    label="Login"
+                                    name={'Login'}
+                                    type={'text'}
+                                    className={style.input}
+                                    value={values.Login}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                <p>
+                                    {touched.Login && errors.Login && <p className={style.errors}> {errors.Login}</p>}
+                                </p>
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Password"
+                                    name={'Password'}
+                                    type="password"
+                                    className={style.input}
+                                    value={values.Password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                <p>
+                                    {touched.Password && errors.Password && <p className={style.errors}> {errors.Password}</p>}
+                                </p>
 
-                <Box component="span" m={1} className={style.box}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                            sendForm()
-                        }
-                        }>
-                        Sign In
-                    </Button>
-                    <Link href='http://localhost:3000/todo/reg'>Sign Up</Link>
-                </Box>
-
-
-            </FormGroup>
-
-        </Container>
+                                <Box component="span" m={1} className={style.box}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => sendForm(values)}
+                                        disabled={!isValid && !dirty}>
+                                        Sign In
+                                    </Button>
+                                    <Link href='http://localhost:3000/todo/reg'>Sign Up</Link>
+                                </Box>
+                            </FormGroup>
+                        </Container>
+                    )
+                )
+            }
+            }
+        </Formik>
     )
 }
 
@@ -90,14 +117,19 @@ const useStyles = makeStyles(() => ({
     },
     input: {
         width: "500px",
-        marginBottom: '20px'
+        marginBottom: '1px'
     },
     box: {
         width: '200px',
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center'
-    }
+    },
+    errors: {
+        color: '#B22222',
+        marginTop: '1px',
+        fontSize: '14px'
+    },
 }));
 
 
