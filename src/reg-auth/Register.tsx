@@ -142,7 +142,6 @@ const useStyles = makeStyles(() => ({
     },
     input: {
         width: "500px",
-        marginBottom: '20px'
     },
     box: {
         width: '200px',
@@ -151,8 +150,10 @@ const useStyles = makeStyles(() => ({
         alignItems: 'center'
     },
     errors: {
-        color: 'red'
-    }
+        color: '#B22222',
+        marginTop:'-5px',
+        fontSize:'14px'
+    },
 }));
 
 
