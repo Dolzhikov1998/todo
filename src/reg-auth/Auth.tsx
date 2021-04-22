@@ -89,7 +89,7 @@ function Auth() {
                                         disabled={!isValid && !dirty}>
                                         Sign In
                                     </Button>
-                                    <Link href='http://localhost:3000/todo/reg'>Sign Up</Link>
+                                    <Link href='http://localhost:3000/todo'>Sign Up</Link>
                                 </Box>
                             </FormGroup>
                         </Container>

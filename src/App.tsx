@@ -17,6 +17,7 @@ import { AppState } from './redux/store'
 import { changeNumberPage } from './redux/TaskActions'
 import { clearLocalStorage, FirstGetTasks, handlerPagination } from './redux/TaskRequestAPI'
 import CircularProgress from './components/Loader'
+import { compose } from 'redux';
 
 
 export interface Todo {
@@ -66,11 +67,11 @@ function App() {
   return (
     <Router >
       <Switch>
-        <Route path='/todo/reg' >
+        <Route exact path='/todo'>
           <Register />
         </Route>
 
-        <Route path='/todo/auth'>
+        <Route exact path='/todo/auth'>
           <Auth />
         </Route>
 
