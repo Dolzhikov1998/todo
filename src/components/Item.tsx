@@ -71,7 +71,7 @@ const Item = (props: any) => {
                 <div className="a">
                     &#160;&#160;&#160;
                     <TextField
-                        id="standard-basic"
+                        id={todo.uuid}
                         variant="standard"
                         className={styleInput.root}
                         value={stateTitle}

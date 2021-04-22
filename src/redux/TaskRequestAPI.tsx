@@ -27,11 +27,10 @@ export const deleteTodo = createAsyncThunk(
             const response = await deleteTask(deleteItem.idDeleteItem)
             if (response?.status === 204) {
                 const responseBeforeDelete = await getTask(querystring.stringify({
-                    page: deleteItem.numberPages,
+                    page: 0,
                     done: deleteItem.statusDone,
                     order: 'asc'
                 }))
-                console.log(responseBeforeDelete)
                 if (responseBeforeDelete) return responseBeforeDelete
             }
         } catch (e) {
@@ -43,7 +42,6 @@ export const deleteTodo = createAsyncThunk(
 export const filtersByDone = createAsyncThunk(
     'task/filterByDone',
     async (filterTaskByDone: FiltersTasks) => {
-        console.log(filterTaskByDone.currentPage);
         try {
             const response = await getTask(querystring.stringify({
                 page: 0,
@@ -108,7 +106,7 @@ export const handlerPagination = createAsyncThunk(
             }))
             if (response) return response
         } catch (e) {
-            console.log(e)
+            // console.log(e)
         }
     }
 );

@@ -47,7 +47,7 @@ function Auth() {
                 Password: ""
             }}
             validateOnBlur
-            onSubmit={(values => { console.log('vvvvvvvvvvvvvvvvvvvvvvv   ' + values) })}
+            onSubmit={(values => {  })}
             validationSchema={validationsShema}
         >
             {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty }) => {

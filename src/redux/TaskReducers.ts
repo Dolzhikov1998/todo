@@ -37,20 +37,17 @@ export default createReducer(initialState, builder => {
             return state
         })
         .addCase(addNewTask.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.counterPages = Math.ceil(action.payload.countCards.count / 5)
             if (state.todos.length < 5) state.todos.push(action.payload.card);
         })
         .addCase(deleteTodo.fulfilled, (state, action) => {
             if (action.payload) {
-                console.log(action.payload)
                 state.counterPages = Math.ceil(action.payload.data.count / 5)
                 state.todos = action.payload.data.rows
             }
         })
         .addCase(filtersByDone.fulfilled, (state, action) => {
             if (action.payload) {
-                console.log(action.payload)
                 state.counterPages = Math.ceil(action.payload.data.count / 5)
                 state.page = 0
                 state.todos = action.payload.data.rows
@@ -101,10 +98,8 @@ export default createReducer(initialState, builder => {
             }
         })
         .addCase(FirstGetTasks.pending, (state, action) => {
-            // if (action.payload) {
             state.statusLoading = true
             return state
-            // }
         })
         .addCase(addFillterByDone, (state, action) => {
             state.filterDone = action.payload
