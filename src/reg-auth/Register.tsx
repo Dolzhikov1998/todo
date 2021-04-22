@@ -4,139 +4,126 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
-import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 // import deepEqual from "lodash.isequal"
 
 import { sendFormInfoUser } from '../services/userServices'
 import { useHistory } from "react-router-dom";
 
+import * as yup from 'yup';
+import { Formik } from 'formik';
+import { FormGroup, TextField } from '@material-ui/core';
+
+export interface sendForm {
+    Login: string,
+    Email: string,
+    Password: string,
+}
+
 function Register() {
     const style = useStyles()
 
-    const [login, setLogin] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    // const [err, setErr] = useState(false)
-
     let history = useHistory()
 
-    const sendForm = async () => {
-        // console.log('asdasfafasfafafasf')
+    const sendForm = async (values: sendForm) => {
+        console.log(values)
         const response = await sendFormInfoUser({
-            login: login,
-            password: password,
-            email: email,
+            login: values.Login,
+            password: values.Password,
+            email: values.Email,
             typeRequest: 'reg'
         })
 
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
-            localStorage.setItem('login', login)
+            localStorage.setItem('login', values.Login)
             history.push("/todo/app")
             history.go(0)
         }
     }
 
+    const validationsShema = yup.object().shape({
+        Login: yup.string().typeError('Must have string').min(6, "Login should have a minimum 6 symbols").required('Login is required filed'),
+        Email: yup.string().typeError('Must have string').email('Enter correct email').required('Email is required filed'),
+        Password: yup.string().typeError('Must have string').min(6, "Password should have a minimum6 symbols").required('Password is required filed'),
+    })
+
     return (
         <Formik
             initialValues={{
-                login: '',
-                email: '',
-                password: '',
+                Login: "",
+                Email: "",
+                Password: ""
             }}
-            validationSchema={Yup.object().shape({
-                login: Yup.string()
-                    .required('Login is required')
-                    .min(5, 'Login must be at least 5 characters'),
-                email: Yup.string()
-                    .email('Email is invalid')
-                    .required('Email is required'),
-                password: Yup.string()
-                    .min(2, 'Password must be at least 2 characters')
-                    .required('Password is required'),
-            })}
-            onSubmit={() => {
-                sendForm()
-            }}
-            render={({ errors, touched, handleSubmit, handleBlur, values, initialValues }) => {
-
-                console.log(errors)
-
-
-                8bd5b449e51da73aa5901eb2e120b494ab3b48f7
+            validateOnBlur
+            onSubmit={(values => { console.log('vvvvvvvvvvvvvvvvvvvvvvv   ' + values) })}
+            validationSchema={validationsShema}
+        >
+            {({ values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty }) => {
                 return (
-                    <Container fixed className={style.container}>
-                        <Form className={style.form} onSubmit={handleSubmit} >
-                            <h1>SIGN UP</h1>
-
-                            <div className={style.div}>
-                                <label htmlFor="login" className={style.label}>Login</label>
-                                <Field
-                                    name="login"
-                                    type="text"
+                    (
+                        <Container fixed className={style.container}>
+                            <FormGroup className={style.form}>
+                                <h1>SIGN UP</h1>
+                                <TextField
                                     id="filled-login-input"
                                     label="Login"
-                                    className={`${style.input} ${(errors.login ? style.errorInput : '')}`}
-                                    value={login}
-                                    onChange={(event: { target: { value: React.SetStateAction<string>; }; }) => {
-                                        setLogin(event.target.value)
-                                    }}
-                                    onBlur={(event: any) => console.log(event)}
+                                    type='text'
+                                    name={'Login'}
+                                    className={style.input}
+                                    value={values.Login}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
-                                <ErrorMessage name="login" component="TextField" className={style.errorMessage} />
-                            </div>
-                            <div className={style.div}>
-                                <label htmlFor="email" className={style.label}>Email</label>
-                                <Field
-                                    name="email"
-                                    type="text"
+                                <p>
+                                    {touched.Login && errors.Login && <p className={style.errors}> {errors.Login}</p>}
+                                </p>
+                                <TextField
                                     id="filled-email-input"
                                     label="Email"
-                                    className={`${style.input} ${(errors.login && touched.login ? style.errorInput : '')}`}
-                                    value={email}
-                                    onChange={(event: { target: { value: React.SetStateAction<string>; }; }) => {
-                                        setEmail(event.target.value)
-                                    }}
-                                    onBlur={(event: any) => console.log(event)}
+                                    type='text'
+                                    name={'Email'}
+                                    className={style.input}
+                                    value={values.Email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
-                                <ErrorMessage name="email" component="TextField" className={style.errorMessage} />
-                            </div>
-
-                            <div className={style.div}>
-                                <label htmlFor="password" className={style.label}>Password</label>
-                                <Field
-                                    name="password"
+                                <p>
+                                    {touched.Email && errors.Email && <p className={style.errors}> {errors.Email}</p>}
+                                </p>
+                                <TextField
                                     id="filled-password-input"
                                     label="Password"
                                     type="password"
-                                    className={`${style.input} ${(errors.login && touched.login ? style.errorInput : '')}`}
-                                    value={password}
-                                    onChange={(event: { target: { value: React.SetStateAction<string>; }; }) => {
-                                        setPassword(event.target.value)
-                                    }}
-                                    onBlur={(event: any) => console.log(event)}
-                                />
-                                <ErrorMessage name="password" component="TextField" className={style.errorMessage} />
-                            </div>
-                            <Box component="span" m={1} className={style.box}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => sendForm()}
-                                >
-                                    Sign Up
-                                </Button>
-                                <Link href='http://localhost:3000/todo/auth'>Sign In</Link>
-                            </Box>
-                        </Form>
-                    </Container>
+                                    name={'Password'}
+                                    className={style.input}
+                                    value={values.Password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                <p>
+                                    {touched.Password && errors.Password && <p className={style.errors}> {errors.Password}</p>}
+                                </p>
+
+                                <Box component="span" m={1} className={style.box}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => sendForm(values)}
+                                        disabled={!isValid && !dirty}
+                                        type={'submit'}>
+                                        Sign Up
+                                    </Button>
+                                    <Link href='http://localhost:3000/todo/auth'>Sign In</Link>
+                                </Box>
+                            </FormGroup>
+
+                        </Container>
+                    )
                 )
             }
             }
-        />
+
+        </Formik>
     )
 }
 
@@ -160,13 +147,6 @@ const useStyles = makeStyles(() => ({
         marginTop: '1px',
         height: '30px',
         width: "500px",
-        marginBottom: '10px',
-        fontSize: '16px',
-        borderRadius: '5px',
-        color: '#333',
-        paddingLeft: '10px',
-        borderColor: '#666',
-        borderWidth: '1.5px'
     },
     box: {
         width: '200px',
@@ -174,21 +154,11 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-around',
         alignItems: 'center'
     },
-    label: {
-        marginTop: '10px',
-        marginBottom: '5px'
+    errors: {
+        color: '#B22222',
+        marginTop:'-5px',
+        fontSize:'14px'
     },
-    errorMessage: {
-        color: "#ff0000",
-        fontSize: '14px'
-    },
-    div: {
-        marginTop: '5px'
-    },
-    errorInput: {
-        borderColor: 'red',
-        borderWidth: '1.5px'
-    }
 }));
 
 
