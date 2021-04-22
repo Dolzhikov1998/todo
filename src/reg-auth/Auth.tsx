@@ -65,9 +65,9 @@ function Auth() {
                                     value={values.Login}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                <p>
+                                <Box>
                                     {touched.Login && errors.Login && <p className={style.errors}> {errors.Login}</p>}
-                                </p>
+                                </Box>
                                 <TextField
                                     id="filled-password-input"
                                     label="Password"
@@ -77,9 +77,9 @@ function Auth() {
                                     value={values.Password}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                <p>
+                                <Box>
                                     {touched.Password && errors.Password && <p className={style.errors}> {errors.Password}</p>}
-                                </p>
+                                </Box>
 
                                 <Box component="span" m={1} className={style.box}>
                                     <Button
@@ -117,7 +117,7 @@ const useStyles = makeStyles(() => ({
     },
     input: {
         width: "500px",
-        marginBottom: '1px'
+        margin: '15px 0px',
     },
     box: {
         width: '200px',

@@ -71,9 +71,9 @@ function Register() {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p>
+                                <Box>
                                     {touched.Login && errors.Login && <p className={style.errors}> {errors.Login}</p>}
-                                </p>
+                                </Box>
                                 <TextField
                                     id="filled-email-input"
                                     label="Email"
@@ -84,9 +84,9 @@ function Register() {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <p>
+                                <Box>
                                     {touched.Email && errors.Email && <p className={style.errors}> {errors.Email}</p>}
-                                </p>
+                                </Box>
                                 <TextField
                                     id="filled-password-input"
                                     label="Password"
@@ -96,15 +96,17 @@ function Register() {
                                     value={values.Password}
                                     onChange={handleChange}
                                     onBlur={handleBlur} />
-                                <p>
+                                <Box className={style.boxForError}>
                                     {touched.Password && errors.Password && <p className={style.errors}> {errors.Password}</p>}
-                                </p>
+                                </Box>
 
                                 <Box component="span" m={1} className={style.box}>
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => sendForm(values)}
+                                        onClick={() => {
+                                            if (isValid) sendForm(values)
+                                        }}
                                         disabled={!isValid && !dirty}
                                         type={'submit'}>
                                         Sign Up
@@ -140,7 +142,7 @@ const useStyles = makeStyles(() => ({
         alignItems: 'center',
     },
     input: {
-        marginTop: '1px',
+        margin: '15px 0px',
         height: '30px',
         width: "500px",
     },
@@ -152,9 +154,10 @@ const useStyles = makeStyles(() => ({
     },
     errors: {
         color: '#B22222',
-        marginTop: '8px',
         fontSize: '14px'
     },
+    boxForError: {
+    }
 }));
 
 
