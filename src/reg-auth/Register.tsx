@@ -156,8 +156,8 @@ const useStyles = makeStyles(() => ({
     },
     errors: {
         color: '#B22222',
-        marginTop:'-5px',
-        fontSize:'14px'
+        marginTop: '8px',
+        fontSize: '14px'
     },
 }));
 
